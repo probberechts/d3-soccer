@@ -1,6 +1,6 @@
 {
   "name": "d3-soccer",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "A d3 plugin to visualize soccer data.",
   "keywords": [
     "d3",
