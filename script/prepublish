@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Run test first
+./script/test
+
+build_dir="dist"
+example_dir="example"
+entry_point="src/index.js"
+target_point="d3-soccer"
+
+# Delete example/build dir
+rm -rf $example_dir/$build_dir
+
+# Create a build folder
+mkdir $example_dir/$build_dir/
+
+
+rollup -c #-f umd -n d3 -o $build_dir/$target_point.js -- $entry_point
+
+# Remember live reload happens only with example build, once done prepublish has to be run again
+rollup -c $1 -f umd -n d3 -o $example_dir/$build_dir/$target_point.js -- $entry_point

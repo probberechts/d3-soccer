@@ -1,0 +1,25 @@
+//- action_tooltip.pug
+table
+  tr
+    th(colspan="2")= type
+  tr
+    td Player
+    td= player
+  tr
+    td Team
+    td= team
+  tr
+    td Result
+    td= result
+  tr
+    td Body part
+    td= bodypart
+  tr
+    td Time
+    td #{Math.floor(time / 60)} min #{time % 60} sec
+  tr
+    td Start
+    td x=#{start.x.toFixed(2)} , y=#{start.y.toFixed(2)}
+  tr
+    td End
+    td x=#{end.x.toFixed(2)} , y=#{end.y.toFixed(2)}

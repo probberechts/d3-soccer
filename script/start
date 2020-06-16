@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Get nearest exe
+bin_path="$(npm bin)"
+
+# Before running the server build it without watch
+./script/prepublish
+
+# Run the server
+$bin_path/browser-sync start --server example/ -w

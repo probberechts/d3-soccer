@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>D3 Soccer</title>
+    <style type="text/css">
+    svg {
+      margin: 50px;
+    }
+  </style>
+</head>
+<body>
+
+<div id="chart"></div>
+
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script type="text/javascript" src="./dist/d3-soccer.js"></script>
+<script type="text/javascript">
+
+var w = '100%', h = 500;
+
+var pitch = d3.pitch().height(h).showDirOfPlay(true);
+
+var svg = d3.select("#chart")
+  .append("svg")
+  .attr("width", w)
+  .attr("height", h)
+  .append("svg:g")
+  .call(pitch);
+
+</script>
+</body>
+</html>

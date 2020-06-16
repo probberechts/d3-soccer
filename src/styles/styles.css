@@ -1,0 +1,90 @@
+@import '_variables';
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+
+:root {
+	background-color: var( --background-color );
+  font-family: "Open Sans";
+}
+
+.pitch {
+  stroke: var( --pitch-line-color );
+  fill: var( --pitch-line-color );
+}
+
+.tooltip {
+  font-family: "Open Sans";
+  position: absolute;
+  background: #fff;
+  pointer-events: none;
+  z-index: 6;
+  align-items: center;
+  transform: translateX(20px) translateY(0%) translateY(-14px);
+  opacity: 0;
+  display: flex;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, .16);
+
+  table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    background-color: #fff;
+    empty-cells: show;
+    -webkit-box-shadow: 7px 7px 12px -9px #777;
+    -moz-box-shadow: 7px 7px 12px -9px #777;
+    box-shadow: 7px 7px 12px -9px #777;
+    opacity: .9;
+    th {
+      background-color: #aaa;
+      font-size: 14px;
+      padding: 2px 5px;
+      text-align: left;
+      color: #FFF;
+    }
+    tr {
+      border: 1px solid #CCC;
+    }
+    td {
+      font-size: 13px;
+      padding: 3px 6px;
+      background-color: #fff;
+      border-left: 1px dotted #999;
+    }
+  }
+}
+
+.header {
+  .h1 {
+    font-size: 32px;
+    fill: var( --color );
+  }
+  .h2 {
+    font-size: 21px;
+    fill: var( --color-meta );
+  }
+  .circle {
+    stroke: var( --color-meta );
+  }
+}
+
+.actions_table {
+  font-size: .8em;
+  :last-child {
+    margin-bottom: 0;
+  }
+
+  table {
+    border-collapse: collapse;
+    background-color: transparent;
+    th {
+      padding: 8px 5px;
+      line-height: 1.625;
+      vertical-align: bottom;
+      border-bottom: 2px solid #d8d9da;
+    }
+    td {
+      padding: 8px 5px;
+      line-height: 1.625;
+      vertical-align: top;
+      border-top: 1px solid #ededed;
+    }
+  }
+}

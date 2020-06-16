@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>D3 soccer</title>
+    <style type="text/css">
+    svg {
+      margin: 50px;
+    }
+  </style>
+</head>
+<body>
+
+<div id="chart"></div>
+
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script type="text/javascript" src="./dist/d3-soccer.js"></script>
+<script type="text/javascript">
+var height = 500;
+
+d3.json("data/debruyne_actions_heatmap.json").then(data => {
+
+  var pitch = d3.pitch().height(height);
+  var hed = d3.header()
+    .hed('Kevin De Bruyne')
+    .subhed('Ball touches')
+    .img('img/debruyne.png');
+  var heatmap = d3.heatmap(pitch);
+  var tooltip = d3.actionTooltip();
+  d3.select("#chart")
+    .call(tooltip);
+
+  var svg = d3.select("#chart")
+    .append("svg")
+    .attr("class", "light-theme")
+    .attr("width", "100%")
+    .attr("height", height);
+
+  svg.append("g")
+    .datum(data)
+    .call(heatmap)
+    .attr("transform", "rotate(-90)translate(-"+(pitch.width()+50)+",0)");
+
+  d3.json("data/debruyne_actions.json").then(data => {
+    svg.select("#above")
+      .datum(data)
+    .append('g')
+        .selectAll("dot")
+        .data(data)
+        .enter()
+        .append("circle")
+          .attr("cx", function (d) { return d.start_x; } )
+          .attr("cy", function (d) { return d.start_y; } )
+          .attr("r", .5)
+          .attr("fill", "#FF6600")
+          .attr("stroke", "#white")
+          .attr("stroke-width", .1)
+          .on('mouseover', d => tooltip.show(d))
+          .on('mouseout', () => tooltip.hide())
+  })
+
+  svg.append('g')
+    .call(hed)
+    .attr("transform", "translate(30,0)");
+})
+
+</script>
+</body>
+</html>

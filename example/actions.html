@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>D3 soccer</title>
+<style type="text/css">
+#chart>svg {
+  margin: 50px;
+}
+.vizrow {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+}
+
+.vizcolumn {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex: 1;
+  flex-grow: 0;
+}
+</style>
+</head>
+<body>
+
+<div class="vizrow">
+<div id="chart" class="vizcolumn"></div>
+<div id="table" class="vizcolumn"></div>
+</div>
+
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script type="text/javascript" src="./dist/d3-soccer.js"></script>
+<script type="text/javascript">
+var height = 400;
+
+d3.json("data/bel_bra.json").then(data => {
+  var pitch = d3.pitch().height(height - 20);
+  var tooltip = d3.actionTooltip();
+  d3.select("#chart")
+    .call(tooltip);
+
+  var actions = d3.actions(pitch)
+    .showTooltip(tooltip)
+    .scale(2)
+    .teamColors({782:"#EF3340", 781:"#FDB913"});
+  var actionsTable = d3.actionsTable();
+  var scoreline = d3.scoreline().teams([
+    {"label": "BEL", "color": "#EF3340"},
+    {"label": "BRA", "color": "#FDB913"} ])
+    .score([2,0])
+    .clock(30);
+
+  var svg = d3.select("#chart").append("svg")
+    .attr("width", pitch.width())
+    .attr("height", height)
+    .attr("class", "light-theme")
+
+  akksvg.append("g")
+    .datum(data.slice(657,663))
+    .attr("transform", "translate(0,20)")
+    .call(actions);
+
+  svg.append("g")
+    .attr("transform", "translate(26, 10)")
+    .call(scoreline)
+
+  d3.select("#table")
+    .datum(data.slice(657,663))
+    .call(actionsTable)
+})
+</script>
+</body>
+</html>

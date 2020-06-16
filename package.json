@@ -1,0 +1,67 @@
+{
+  "name": "d3-soccer",
+  "version": "0.0.0",
+  "description": "A d3 plugin to visualize soccer data.",
+  "keywords": [
+    "d3",
+    "d3-module",
+    "soccer",
+    "football",
+    "visualization"
+  ],
+  "homepage": "https://github.com/probberechts/d3-soccer",
+  "license": "MIT",
+  "author": "Pieter Robberechts",
+  "main": "dist/d3-soccer.js",
+  "unpkg": "dist/d3-soccer.min.js",
+  "jsdelivr": "dist/d3-soccer.min.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/probberechts/d3-soccer.git"
+  },
+  "files": [
+    "dist/**/*.js",
+    "src/**/*.js"
+  ],
+  "scripts": {
+    "pretest": "rollup -c",
+    "test": "script/test",
+    "prepublish": "script/prepublish",
+    "start": "script/start",
+    "dev": "NODE_ENV=dev && script/prepublish --watch",
+    "postpublish": "git push && git push --tags && zip -j dist/${npm_package_name}.zip -- LICENSE README.md dist/${npm_package_name}.js dist/${npm_package_name}.min.js"
+  },
+  "sideEffects": false,
+  "devDependencies": {
+    "@babel/core": "^7.7.4",
+    "@babel/preset-env": "^7.7.4",
+    "browser-sync": "^2.26.7",
+    "eslint": "^6.7.2",
+    "postcss-custom-properties": "^9.0.2",
+    "postcss-custom-selectors": "^5.1.2",
+    "postcss-import": "^12.0.1",
+    "postcss-nested": "^4.2.1",
+    "postcss-sorting": "^5.0.1",
+    "pre-commit": "^1.2.2",
+    "rollup": "^1.27.8",
+    "rollup-plugin-babel": "^4.3.3",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-eslint": "^6.0.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-postcss": "^3.1.1",
+    "rollup-plugin-pug": "^1.1.1",
+    "rollup-plugin-stylelint": "^1.0.0",
+    "rollup-plugin-terser": "^5.1.2",
+    "stylelint": "^12.0.0",
+    "np": "^6.2.4"
+  },
+  "dependencies": {
+    "d3-axis": "^1.0.12",
+    "d3-color": "^1.4.0",
+    "d3-scale": "^3.2.1",
+    "d3-scale-chromatic": "^1.5.0",
+    "d3-selection": "^1.4.1",
+    "d3-shape": "^1.3.7",
+    "d3-zoom": "^1.8.3"
+  }
+}

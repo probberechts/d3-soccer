@@ -1,0 +1,20 @@
+
+:root {
+	--background-color: #ffffff ;
+	--color: #333333 ;
+	--color-meta: #808080 ;
+ 
+	--pitch-line-color: #808080 ;
+}
+ 
+.dark-theme {
+	--background-color: #162939 ;
+	--color: #43FCD5 ;
+	--color-meta: #f3efef ;
+ 
+	--pitch-line-color: #cccccc ;
+}
+ 
+.light-theme {
+
+}
