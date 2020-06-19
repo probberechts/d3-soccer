@@ -106,6 +106,14 @@ export default function(pitch) {
     return chart;
   };
 
+
+  chart.enableInteraction = function (_) {
+    if (!arguments.length) return enableInteraction;
+    enableInteraction = Boolean(_);
+    return chart;
+  };
+
+
   chart.onSelect = function (f) {
     onSelect = f;
     return chart;

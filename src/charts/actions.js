@@ -434,6 +434,8 @@ function symbolBlock(g, d, i, color, scale) {
     .attr('class', 'symbol block')
 
   block.append('rect')
+    .attr('x', -size/2)
+    .attr('y', -size/2)
     .attr('width', size)
     .attr('height', size)
     .attr('stroke-width', strokeWidth)

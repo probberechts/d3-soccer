@@ -7,20 +7,22 @@ import css from '../styles/styles.css';
 export default function() {
 
   var margin = {top: 5, right: 5, bottom: 5, left: 5};
+  var clip = {top: 0, right: pitchLenght, bottom: pitchWidth, left: 0};
   var height = 300;
+  var width = (-clip.left + clip.right)/(-clip.top + clip.bottom)*height;
   var pitchstrokewidth = .5;
   var dirOfPlay = false;
 
   function chart(g) {
     g.each(function() {
       var pitch = d3Select(this).append("svg")
-        .attr("width", pitchLenght/pitchWidth*height + margin.left + margin.right)
+        .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
-        .attr("viewBox", "0 0 " + (pitchLenght + margin.left + margin.right) + " " + (pitchWidth + margin.top + margin.bottom) + "")
+        .attr("viewBox", "0 0 " + (-clip.left + clip.right + margin.left + margin.right) + " " + (-clip.top + clip.bottom + margin.top + margin.bottom) + "")
         .attr("preserveAspectRatio", "xMinYMin meet")
         .append("g")
         .attr("id", "pitch")
-        .attr("transform", `translate(${margin.left}, ${margin.top})`);
+        .attr("transform", `translate(${margin.left - clip.left}, ${margin.top - clip.top})`);
 
       pitch.append("g")
         .attr("id", "below")
@@ -192,13 +194,14 @@ export default function() {
   }
 
   chart.height = function (_) {
-    if (!arguments.length) return height + margin.top + margin.bottom;
+    if (!arguments.length) return height;
     height = +_;
+    width = (-clip.left + clip.right)/(-clip.top + clip.bottom)*height;
     return chart;
   };
 
   chart.width = function () {
-    return pitchLenght/pitchWidth*height + margin.left + margin.right;
+    return width;
   };
 
   chart.showDirOfPlay = function (_) {
@@ -210,6 +213,19 @@ export default function() {
   chart.pitchStrokeWidth = function (_) {
     if (!arguments.length) return pitchstrokewidth;
     pitchstrokewidth = +_;
+    return chart;
+  };
+
+  chart.clip = function (_) {
+    if (!arguments.length) return [[clip.left, clip.top], [clip.right, clip.bottom]];
+    clip = {top: _[0][1], bottom: _[1][1], left: _[0][0], right: _[1][0]};
+    width = (-clip.left + clip.right)/(-clip.top + clip.bottom)*height;
+    return chart;
+  };
+
+  chart.margin = function (_) {
+    if (!arguments.length) return [[margin.left, margin.top], [margin.right, margin.bottom]];
+    margin = {top: _[0][1], bottom: _[1][1], left: _[0][0], right: _[1][0]};
     return chart;
   };
 

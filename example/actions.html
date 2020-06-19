@@ -60,7 +60,7 @@ d3.json("data/bel_bra.json").then(data => {
     .attr("height", height)
     .attr("class", "light-theme")
 
-  akksvg.append("g")
+  svg.append("g")
     .datum(data.slice(657,663))
     .attr("transform", "translate(0,20)")
     .call(actions);
