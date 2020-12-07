@@ -113,7 +113,7 @@ If _colors_ is specified, will set the colors used for the markers of both teams
 
 <a name="actions_draggable" href="#actions_draggable">#</a> <i>actions</i>.<b>draggable</b>([<i>draggable</i>])
 
-If _draggbele_ is set to true, will enable dragging the action markers around and trigger [onUpdate](#actions_onUpdate). If not specified, returns the current setting which defaults to false.
+If _draggable_ is set to true, will enable dragging the action markers around and trigger [onUpdate](#actions_onUpdate). If not specified, returns the current setting which defaults to false.
 
 <a name="actions_onUpdate" href="#actions_onUpdate">#</a> <i>actions</i>.<b>onUpdate</b>([<i>f</i>])
 
