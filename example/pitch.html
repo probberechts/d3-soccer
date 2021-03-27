@@ -10,14 +10,18 @@
 </head>
 <body>
 
-<div id="chart"></div>
+<div id="chart" class="light-theme"></div>
 
 <script src="https://d3js.org/d3.v5.min.js"></script>
 <script type="text/javascript" src="./dist/d3-soccer.js"></script>
 <script type="text/javascript">
 
 var h = 300;
-var pitch = d3.pitch().height(h);
+var pitch = d3.pitch().height(h)
+  .clip([[0,0],[105,68]])
+  .rotate(false)
+  .showDirOfPlay(true)
+  .shadeMiddleThird(false);
 var svg = d3.select("#chart").call(pitch);
 
 </script>

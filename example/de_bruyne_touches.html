@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>D3 soccer</title>
+    <style type="text/css">
+    svg {
+      margin: 50px;
+    }
+  </style>
+</head>
+<body>
+
+<div id="chart" class="light-theme"></div>
+
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script type="text/javascript" src="./dist/d3-soccer.js"></script>
+<script type="text/javascript">
+var pitch_height = 500;
+var header_height = 120;
+
+d3.json("data/debruyne_actions_heatmap.json").then(data => {
+
+  var hed = d3.header()
+    .hed('Kevin De Bruyne')
+    .subhed('Ball touches')
+    .img('img/debruyne.png');
+  var pitch = d3.pitch()
+    .height(pitch_height)
+    .rotate(false);
+  var heatmap = d3.heatmap(pitch).interpolate(true);
+  var tooltip = d3.actionTooltip();
+  d3.select("#chart")
+    .call(tooltip);
+
+  var svg = d3.select("#chart")
+    .append("svg")
+    // .attr("class", "dark-theme")
+    .attr("width", pitch.width() + 40)
+    .attr("height", pitch_height + header_height + 60);
+
+  svg.append("g")
+    .attr('transform', `translate(20,${header_height + 20})`)
+    .datum(data)
+    .call(heatmap)
+
+  d3.json("data/debruyne_actions.json").then(data => {
+    svg.select("#above")
+      .datum(data)
+    .append('g')
+        .selectAll("dot")
+        .data(data)
+        .enter()
+        .append("circle")
+          .attr("cx", function (d) { return d.start_x; } )
+          .attr("cy", function (d) { return d.start_y; } )
+          .attr("r", .5)
+          .attr("fill", "crimson")
+          .attr("stroke", "#white")
+          .attr("stroke-width", .1)
+          .on('mouseover', d => tooltip.show(d))
+          .on('mouseout', () => tooltip.hide())
+  })
+
+  svg.append('g')
+    .attr("transform", "translate(30,30)")
+    .call(hed);
+
+  svg.append('text')
+    .attr('x', pitch.width())
+    .attr('y', header_height + pitch_height + 40)
+    .attr('text-anchor', 'end')
+    .style("fill", "grey")
+    .style("font-style", "italic")
+    .style("font-size", "11px")
+    .text("Data provided by StatsBomb");
+
+})
+
+</script>
+</body>
+</html>

@@ -39,10 +39,17 @@ If a _height_ is specified, it sets the height of the corresponding SVG element 
 
 Returns the current width of the SVG element.
 
+<a name="pitch_rotate" href="#pitch_rotate">#</a> <i>pitch</i>.<b>rotate</b>([<i>bool</i>])
 
-<a name="pitch_showDirOfPlay" href="#pitch_showDirOfPlay">#</a> <i>pitch</i>.<b>showDirOfPlay</b>([<i>height</i>])
+If _bool_ is specified and set to `true`, rotate the plot by 90 degrees. If _bool_ is not specified, returns the current setting, which defaults to false.
 
-If _dirOfPlay_ is specified and set to `true`, shows an arrow on the plot from left to right to indicate the direction of play. If _dirOfPlay_ is not specified, returns the current setting.
+<a name="pitch_showDirOfPlay" href="#pitch_showDirOfPlay">#</a> <i>pitch</i>.<b>showDirOfPlay</b>([<i>bool</i>])
+
+If _bool_ is specified and set to `true`, shows an arrow on the plot from left to right to indicate the direction of play. If _bool_ is not specified, returns the current setting, which defaults to false.
+
+<a name="pitch_shadeMiddleThird" href="#pitch_shadeMiddleThird">#</a> <i>pitch</i>.<b>shadeMiddleThird</b>([<i>bool</i>])
+
+If _bool_ is specified and set to `true`, the middle third of the pitch is shaded. If _bool_ is not specified, returns the current setting, which defaults to false.
 
 <a name="pitch_clip" href="#pitch_clip">#</a> <i>pitch</i>.<b>clip</b>([<i>clip</i>])
 
@@ -63,7 +70,7 @@ Creates a new heatmap generator with the default configuration values and the sp
 
 Render the heatmap to the given *context*, which may be either a [selection](https://github.com/d3/d3-selection) of containers (either HTML, SVG or G elements) or a corresponding [transition](https://github.com/d3/d3-transition). Reads the data for the heatmap from the datum property on the container.
 
-<img src="img/heatmap.svg" width="500">
+<img src="img/heatmap.png" width="500">
 
 <a name="heatmap_fill" href="#heatmap_fill">#</a> <i>heatmap</i>.<b>fill</b>([<i>scale</i>])
 
@@ -72,6 +79,10 @@ If _scale_ is specified, sets the color scale, which should be an instance of [d
 <a name="heatmap_enableInteraction" href="#heatmap_enableInteraction">#</a> <i>heatmap</i>.<b>enableInteraction</b>([<i>enable</i>])
 
 If _enable_ is set to true, a border will be drawn around a cell of the heatmap when hovered. Additional actions can be assigned trough [onSelect](#heatmap_onSelect) and [onDeselect](#heatmap_onDeselect). If not set, returns the current configuration. Interaction is disabled by default.
+
+<a name="heatmap_interpolate" href="#heatmap_interpolate">#</a> <i>heatmap</i>.<b>interpolate</b>([<i>interpolate</i>])
+
+If _interpolate_ is set to true, the heatmap will be interpolated using bicubic interpolation. If not set, returns the current configuration, which defaults to false.
 
 <a name="heatmap_selected" href="#heatmap_selected">#</a> <i>heatmap</i>.<b>selected</b>([<i>cell</i>])
 
@@ -125,6 +136,8 @@ If _f_ is specified, dragging an action's marker will trigger execution of _f(da
 
 <a name="_actionsTable" href="#_actionsTable">#</a> <i>actionsTable</i>(<i>context</i>)
 
+<img src="img/actionsTable.png" width="400"><br/>
+
 <a name="actionsTable_tableColumns" href="#actionsTable_tableColumns">#</a> <i>actionsTable</i>.<b>tableColumns</b>([<i>columns</i>])
 
 <a name="actionsTable_scale" href="#actionsTable_scale">#</a> <i>actionsTable</i>.<b>scale</b>([<i>scale</i>])
@@ -138,6 +151,7 @@ If _f_ is specified, dragging an action's marker will trigger execution of _f(da
 
 <a name="_actionTooltip" href="#_actionTooltip">#</a> <i>actionTooltip</i>(<i>context</i>)
 
+<img src="img/actionTooltip.png" width="200">
 
 <a name="actionTooltip_show" href="#actionTooltip_show">#</a> <i>actionTooltip</i>.<b>show</b>([<i>data</i>])
 
@@ -152,6 +166,7 @@ If _f_ is specified, dragging an action's marker will trigger execution of _f(da
 
 <a name="_scoreline" href="#_scoreline">#</a> <i>scoreline</i>(<i>context</i>)
 
+<img src="img/scoreLine.png" width="200">
 
 <a name="scoreline_height" href="#scoreline_height">#</a> <i>scoreline</i>.<b>height</b>([<i>height</i>])
 

@@ -2,10 +2,10 @@ import { select as d3Select } from "d3-selection";
 
 export default function() {
 
-  var hed = undefined;
+  var hed = "Premier League";
   var logo_home = undefined;
   var logo_away = undefined;
-  var score = undefined;
+  var score = [0,0];
 
 
   function chart(g) {

@@ -2,29 +2,29 @@
 <html>
 <head>
   <title>D3 soccer</title>
-<style type="text/css">
-#chart>svg {
-  margin: 50px;
-}
-.vizrow {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  width: 100%;
-  align-items: center;
-  justify-content: center;
-  align-content: center;
-  align-items: center;
-}
+  <style type="text/css">
+  #chart>svg {
+    margin: 50px;
+  }
+  .vizrow {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+  }
 
-.vizcolumn {
-  display: flex;
-  flex-direction: column;
-  flex-basis: 100%;
-  flex: 1;
-  flex-grow: 0;
-}
-</style>
+  .vizcolumn {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 100%;
+    flex: 1;
+    flex-grow: 0;
+  }
+  </style>
 </head>
 <body>
 
@@ -48,7 +48,8 @@ d3.json("data/bel_bra.json").then(data => {
     .showTooltip(tooltip)
     .scale(2)
     .teamColors({782:"#EF3340", 781:"#FDB913"});
-  var actionsTable = d3.actionsTable();
+  var actionsTable = d3.actionsTable()
+    .teamColors({782:"#EF3340", 781:"#FDB913"});
   var scoreline = d3.scoreline().teams([
     {"label": "BEL", "color": "#EF3340"},
     {"label": "BRA", "color": "#FDB913"} ])
@@ -57,17 +58,26 @@ d3.json("data/bel_bra.json").then(data => {
 
   var svg = d3.select("#chart").append("svg")
     .attr("width", pitch.width())
-    .attr("height", height)
+    .attr("height", height + 30)
     .attr("class", "light-theme")
 
   svg.append("g")
     .datum(data.slice(657,663))
-    .attr("transform", "translate(0,20)")
+    .attr("transform", "translate(0,30)")
     .call(actions);
 
   svg.append("g")
-    .attr("transform", "translate(26, 10)")
+    .attr("transform", "translate(16, 0)")
     .call(scoreline)
+
+  svg.append('text')
+    .attr('x', pitch.width() - 15)
+    .attr('y', height + 20)
+    .attr('text-anchor', 'end')
+    .style("fill", "grey")
+    .style("font-style", "italic")
+    .style("font-size", "11px")
+    .text("Data provided by StatsBomb");
 
   d3.select("#table")
     .datum(data.slice(657,663))

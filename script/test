@@ -17,7 +17,7 @@ echo "SUCCESS"
 echo -e "\033[0m";
 
 echo -e "\033[35m";
-echo "No test defined."
+tape test/**/*-test.js | faucet
 echo -e "\033[0m";
 
 echo " "

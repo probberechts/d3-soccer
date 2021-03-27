@@ -9,6 +9,11 @@
 .pitch {
   stroke: var( --pitch-line-color );
   fill: var( --pitch-line-color );
+  .shaded {
+    fill: var( --pitch-shade-color );
+    opacity: .1;
+    stroke: 0;
+  }
 }
 
 .tooltip {

@@ -6,23 +6,39 @@ import css from '../styles/styles.css';
 
 export default function() {
 
-  var margin = {top: 5, right: 5, bottom: 5, left: 5};
   var clip = {top: 0, right: pitchLenght, bottom: pitchWidth, left: 0};
   var height = 300;
+  var rotated = false;
   var width = (-clip.left + clip.right)/(-clip.top + clip.bottom)*height;
   var pitchstrokewidth = .5;
   var dirOfPlay = false;
+  var shadeMiddleThird = false;
 
   function chart(g) {
     g.each(function() {
       var pitch = d3Select(this).append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .attr("viewBox", "0 0 " + (-clip.left + clip.right + margin.left + margin.right) + " " + (-clip.top + clip.bottom + margin.top + margin.bottom) + "")
-        .attr("preserveAspectRatio", "xMinYMin meet")
+        .attr("width", width)
+        .attr("height", height)
+        .attr("viewBox", () => {
+          let width = (clip.right - clip.left)
+          let height = (clip.bottom - clip.top)
+          let xdim, ydim, xpad, ypad;
+          if (rotated) {
+            xpad = height === pitchWidth ? 4 : 2;
+            ypad = width === pitchLenght ? 4 : 2;
+            xdim = (-clip.left + clip.right + ypad)
+            ydim = (-clip.top + clip.bottom + xpad)
+          } else {
+            xpad = height === pitchWidth ? 4 : 2;
+            ypad = width === pitchLenght ? 4 : 2;
+            ydim = (-clip.top + clip.bottom + xpad)
+            xdim = (-clip.left + clip.right + ypad)
+          }
+          return `-2 -2 ${xdim} ${ydim}`
+        })
         .append("g")
         .attr("id", "pitch")
-        .attr("transform", `translate(${margin.left - clip.left}, ${margin.top - clip.top})`);
+        .attr("transform", `translate(${- clip.left}, ${- clip.top})rotate(${rotated ? -90 : 0} 0 0)translate(${rotated ? -105 : 0} 0)`);
 
       pitch.append("g")
         .attr("id", "below")
@@ -45,7 +61,7 @@ export default function() {
       lines
         .append("circle")
         .style("stroke-width", pitchstrokewidth)
-        .style("fill", '#00000000')
+        .style("fill", 'none')
         .attr("cx", pitchLenght / 2)
         .attr("cy", pitchWidth / 2)
         .attr("r", 9.15);
@@ -54,7 +70,7 @@ export default function() {
         .style("stroke-width", 0)
         .attr("cx", pitchLenght / 2)
         .attr("cy", pitchWidth / 2)
-        .attr("r", 0.4);
+        .attr("r", pitchstrokewidth);
 
       // Penalty arcs
       var arc1 = d3Arc()
@@ -80,7 +96,7 @@ export default function() {
       lines
         .append("rect")
         .style("stroke-width", pitchstrokewidth)
-        .style("fill", '#00000000')
+        .style("fill", 'none')
         .attr("x", 0)
         .attr("y", pitchWidth/2 - 9.16)
         .attr("width", 5.5)
@@ -88,7 +104,7 @@ export default function() {
       lines
         .append("rect")
         .style("stroke-width", pitchstrokewidth)
-        .style("fill", '#00000000')
+        .style("fill", 'none')
         .attr("x", pitchLenght-5.5)
         .attr("y", pitchWidth/2 - 9.16)
         .attr("width", 5.5)
@@ -118,18 +134,18 @@ export default function() {
         .style("stroke-width", 0)
         .attr("cx", 11)
         .attr("cy", pitchWidth/2)
-        .attr("r", 0.4);
+        .attr("r", pitchstrokewidth);
       lines
         .append("circle")
         .style("stroke-width", 0)
         .attr("cx", pitchLenght-11)
         .attr("cy", pitchWidth/2)
-        .attr("r", 0.4);
+        .attr("r", pitchstrokewidth);
 
       // Direction of play
       if (dirOfPlay) {
         lines.append("polygon")
-          .style("fill", '#00000088')
+          .attr("class", css.shaded)
           .attr("points", `
                   25,${pitchWidth/2 - 2} 
                   35,${pitchWidth/2 - 2} 
@@ -144,33 +160,13 @@ export default function() {
 
       // Pitch boundaries
       lines
-        .append("line")
+        .append("rect")
         .style("stroke-width", pitchstrokewidth)
-        .attr("x1", 0)
-        .attr("y1", 0)
-        .attr("x2", pitchLenght)
-        .attr("y2", 0);
-      lines
-        .append("line")
-        .style("stroke-width", pitchstrokewidth)
-        .attr("x1", 0)
-        .attr("y1", pitchWidth)
-        .attr("x2", pitchLenght)
-        .attr("y2", pitchWidth);
-      lines
-        .append("line")
-        .style("stroke-width", pitchstrokewidth)
-        .attr("x1", 0)
-        .attr("y1", 0)
-        .attr("x2", 0)
-        .attr("y2", pitchWidth);
-      lines
-        .append("line")
-        .style("stroke-width", pitchstrokewidth)
-        .attr("x1", pitchLenght)
-        .attr("y1", 0)
-        .attr("x2", pitchLenght)
-        .attr("y2", pitchWidth);
+        .attr("fill", "none")
+        .attr("x", 0)
+        .attr("y", 0)
+        .attr("width", pitchLenght)
+        .attr("height", pitchWidth);
 
       // Goals
       lines
@@ -190,6 +186,18 @@ export default function() {
 
       pitch.append("g")
         .attr("id", "above")
+
+      // Middle third
+      if (shadeMiddleThird) {
+        lines
+          .append("rect")
+          .attr("class", css.shaded)
+          .attr("fill", "#fff")
+          .attr("x", 35)
+          .attr("y", 0)
+          .attr("width", 35)
+          .attr("height", pitchWidth);
+      }
     });
   }
 
@@ -204,9 +212,21 @@ export default function() {
     return width;
   };
 
+  chart.rotate = function (_) {
+    if (!arguments.length) return rotated;
+    rotated = Boolean(_);
+    return chart;
+  };
+
   chart.showDirOfPlay = function (_) {
     if (!arguments.length) return dirOfPlay;
     dirOfPlay = Boolean(_);
+    return chart;
+  };
+
+  chart.shadeMiddleThird = function (_) {
+    if (!arguments.length) return shadeMiddleThird;
+    shadeMiddleThird = Boolean(_);
     return chart;
   };
 
@@ -220,12 +240,6 @@ export default function() {
     if (!arguments.length) return [[clip.left, clip.top], [clip.right, clip.bottom]];
     clip = {top: _[0][1], bottom: _[1][1], left: _[0][0], right: _[1][0]};
     width = (-clip.left + clip.right)/(-clip.top + clip.bottom)*height;
-    return chart;
-  };
-
-  chart.margin = function (_) {
-    if (!arguments.length) return [[margin.left, margin.top], [margin.right, margin.bottom]];
-    margin = {top: _[0][1], bottom: _[1][1], left: _[0][0], right: _[1][0]};
     return chart;
   };
 

@@ -5,6 +5,7 @@
 	--color-meta: #808080 ;
  
 	--pitch-line-color: #808080 ;
+	--pitch-shade-color: #808080 ;
 }
  
 .dark-theme {
@@ -13,6 +14,7 @@
 	--color-meta: #f3efef ;
  
 	--pitch-line-color: #cccccc ;
+	--pitch-shade-color: #cccccc ;
 }
  
 .light-theme {
