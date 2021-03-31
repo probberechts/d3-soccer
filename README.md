@@ -51,6 +51,11 @@ If _bool_ is specified and set to `true`, shows an arrow on the plot from left t
 
 If _bool_ is specified and set to `true`, the middle third of the pitch is shaded. If _bool_ is not specified, returns the current setting, which defaults to false.
 
+<a name="pitch_goals" href="#pitch_goals">#</a> <i>pitch</i>.<b>goals</b>([<i>goals</i>])
+
+The standard goal markings can be customized by supplying a function to the _goals_ argument. Additionally, the _goals_ argument supports the strings "line" and "box", which correspond to line-style and box-style goal markings. 
+If _goals_ is not specified, returns the current setting, which defaults to line-style markings.
+
 <a name="pitch_clip" href="#pitch_clip">#</a> <i>pitch</i>.<b>clip</b>([<i>clip</i>])
 
 If _clip_ is specified, sets the clipping rectangle and computes the adequate [_width_](#pitch_width). _clip_ is specified as a pair of 2D coordinates \[x, y\]. If _clip_ is not specified, returns the current clipping rectangle, which defaults to: `[[0, 0], [105, 68]]`

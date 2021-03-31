@@ -13,6 +13,43 @@ export default function() {
   var pitchstrokewidth = .5;
   var dirOfPlay = false;
   var shadeMiddleThird = false;
+  var drawGoalsFn = drawGoalsAsLine;
+
+  function drawGoalsAsBox(lines) {
+    lines
+      .append("rect")
+      .style("stroke-width", pitchstrokewidth)
+      .style("fill", "none")
+      .attr("x", -2)
+      .attr("y", pitchWidth/2 - 3.66)
+      .attr("width", 2)
+      .attr("height", 7.32);
+    lines
+      .append("rect")
+      .style("stroke-width", pitchstrokewidth)
+      .style("fill", "none")
+      .attr("x", pitchLenght)
+      .attr("y", pitchWidth/2 - 3.66)
+      .attr("width", 2)
+      .attr("height", 7.32);
+  }
+
+  function drawGoalsAsLine(lines) {
+    lines
+      .append("rect")
+      .style("stroke-width", 0)
+      .attr("x", -pitchstrokewidth*1.5)
+      .attr("y", pitchWidth/2 - 3.66)
+      .attr("width", pitchstrokewidth*3)
+      .attr("height", 7.32);
+    lines
+      .append("rect")
+      .style("stroke-width", 0)
+      .attr("x", pitchLenght-pitchstrokewidth*1.5)
+      .attr("y", pitchWidth/2 - 3.66)
+      .attr("width", pitchstrokewidth*3)
+      .attr("height", 7.32);
+  }
 
   function chart(g) {
     g.each(function() {
@@ -169,20 +206,7 @@ export default function() {
         .attr("height", pitchWidth);
 
       // Goals
-      lines
-        .append("rect")
-        .style("stroke-width", 0)
-        .attr("x", -pitchstrokewidth*1.5)
-        .attr("y", pitchWidth/2 - 3.66)
-        .attr("width", pitchstrokewidth*3)
-        .attr("height", 7.32);
-      lines
-        .append("rect")
-        .style("stroke-width", 0)
-        .attr("x", pitchLenght-pitchstrokewidth*1.5)
-        .attr("y", pitchWidth/2 - 3.66)
-        .attr("width", pitchstrokewidth*3)
-        .attr("height", 7.32);
+      drawGoalsFn(lines);
 
       pitch.append("g")
         .attr("id", "above")
@@ -233,6 +257,17 @@ export default function() {
   chart.pitchStrokeWidth = function (_) {
     if (!arguments.length) return pitchstrokewidth;
     pitchstrokewidth = +_;
+    return chart;
+  };
+
+  chart.goals = function (_) {
+    if (!arguments.length) return drawGoalsFn;
+    if (_ === "box")
+      drawGoalsFn = drawGoalsAsBox;
+    else if (_ === "line")
+      drawGoalsFn = drawGoalsAsLine;
+    else
+      drawGoalsFn = _;
     return chart;
   };
 
