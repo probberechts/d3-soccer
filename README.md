@@ -75,7 +75,7 @@ Creates a new heatmap generator with the default configuration values and the sp
 
 Render the heatmap to the given *context*, which may be either a [selection](https://github.com/d3/d3-selection) of containers (either HTML, SVG or G elements) or a corresponding [transition](https://github.com/d3/d3-transition). Reads the data for the heatmap from the datum property on the container. This data should be in the following format:
 
-```json
+```
 [
   {
     height: 0.99,  // height of the cell
@@ -90,7 +90,7 @@ Render the heatmap to the given *context*, which may be either a [selection](htt
 ]
 ```
 
-D3 soccer provides two layouts to convert data to this format: <a href="#grid">#</a> <i>grid</i>() and <a href="#rectbin">#</a> <i>rectbin</i>().
+D3 soccer provides two layouts to convert data to this format: <a href="#grid">d3.<b>grid</b>()</a> and <a href="#rectbin">d3.<b>rectbin</b>()</a> .
 
 <img src="img/heatmap.png" width="500">
 
@@ -197,3 +197,41 @@ If _f_ is specified, dragging an action's marker will trigger execution of _f(da
 <a name="scoreline_score" href="#scoreline_score">#</a> <i>scoreline</i>.<b>score</b>([<i>score</i>])
 
 <a name="scoreline_clock" href="#scoreline_clock">#</a> <i>scoreline</i>.<b>clock</b>([<i>clock</i>])
+
+<hr>
+
+<a name="grid" href="#grid">#</a> d3.<b>grid</b>()
+
+Constructs a new default grid layout, which can be used to generate data for the heatmap.
+
+<a name="_grid" href="#_grid">#</a> <b>grid</b>(<i>values</i>)
+
+Evaluates the grid layout on the specified 2d array of *values*, returning a 1d array corresponding to the data format required by the <a href="#heatmap">heatmap</a>.
+
+<hr>
+
+<a name="rectbin" href="#rectbin">#</a> d3.<b>rectbin</b>()
+
+Constructs a new default rectbin layout, which can be used to generate data for the heatmap.
+
+<a name="rectbin" href="#_rectbin">#</a> <b>rectbin</b>(<i>points</i>)
+
+Evaluates the rectbin layout on the specified array of *points*, returning an array of rectangular *bins*. Each bin is an array containing the bin’s points, as well as some additional properties which are required by the <a href="#heatmap">heatmap</a>.
+
+Bins that are empty are not omitted. The origin bin at ⟨0,0⟩ is in the top-left.
+
+<a name="x" href="#x">#</a> rectbin.<b>x</b>([<i>accessor</i>])
+
+If *accessor* is specified, sets the *x*-accessor function and returns the rectbin layout; if *accessor* is not specified, returns the current *x*-accessor function, which defaults to `function(d) { return d[0]; }`.
+
+<a name="y" href="#y">#</a> rectbin.<b>y</b>([<i>accessor</i>])
+
+If *accessor* is specified, sets the *y*-accessor function and returns the rectbin layout; if *accessor* is not specified, returns the current *y*-accessor function, which defaults to `function(d) { return d[1]; }`.
+
+<a href="dx" href="#dx">#</a> rectbin.<b>dx</b>([<i>dx</i>])
+
+If *dx* is specified, sets the horizontal bin size to the specified value. If *dx* is not specified, returns the current value, which defaults to 0.1.
+
+<a href="dy" href="#dy">#</a> rectbin.<b>dy</b>([<i>dy</i>])
+
+If *dy* is specified, sets the vertical bin size to the specified value. If *dy* is not specified, returns the current value, which defaults to 0.1.
