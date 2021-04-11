@@ -19,13 +19,14 @@ d3.json("data/xg_heatmap.json").then(data => {
     .height(pitch_height)
     .clip([[0,0],[68,34]])
     .rotate(true);
+  var grid = d3.grid();
   var heatmap = d3.heatmap(pitch)
-    .fill(t => d3.interpolateMagma(1-t))
+    .colorScale(d3.scaleSequential(t => d3.interpolateMagma(1-t)))
     .enableInteraction(true)
     .onSelect((x,y,v) => d3.select('#value').text(`The xG value on the selected location is ${v}`))
     .interpolate(true);
   d3.select("#chart")
-    .datum(data)
+    .datum(grid(data))
     .call(heatmap)
 })
 

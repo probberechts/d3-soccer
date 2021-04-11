@@ -73,13 +73,30 @@ Creates a new heatmap generator with the default configuration values and the sp
 
 <a name="_heatmap" href="#_heatmap">#</a> <i>heatmap</i>(<i>context</i>)
 
-Render the heatmap to the given *context*, which may be either a [selection](https://github.com/d3/d3-selection) of containers (either HTML, SVG or G elements) or a corresponding [transition](https://github.com/d3/d3-transition). Reads the data for the heatmap from the datum property on the container.
+Render the heatmap to the given *context*, which may be either a [selection](https://github.com/d3/d3-selection) of containers (either HTML, SVG or G elements) or a corresponding [transition](https://github.com/d3/d3-transition). Reads the data for the heatmap from the datum property on the container. This data should be in the following format:
+
+```json
+[
+  {
+    height: 0.99,  // height of the cell
+    width: 0.99,   // width of the cell
+    x: 4.95,       // x-index of the cell
+    y: 54.20,      // x-index of the cell
+    i: 5,          // x-index of the cell
+    j: 55,         // y-index of the cell
+    value: 0       // value of the cell
+  },
+  ...
+]
+```
+
+D3 soccer provides two layouts to convert data to this format: <a href="#grid">#</a> <i>grid</i>() and <a href="#rectbin">#</a> <i>rectbin</i>().
 
 <img src="img/heatmap.png" width="500">
 
-<a name="heatmap_fill" href="#heatmap_fill">#</a> <i>heatmap</i>.<b>fill</b>([<i>scale</i>])
+<a name="heatmap_colorScale" href="#heatmap_colorScale">#</a> <i>heatmap</i>.<b>colorScale</b>([<i>scale</i>])
 
-If _scale_ is specified, sets the color scale, which should be an instance of [d3-scale-chromatic](https://github.com/d3/d3-scale-chromatic). If _scale_ is not specified, returns the current color scale, which defaults to `d3.interpolateGreens`.
+If _scale_ is specified, sets the color scale, which should be an instance of [d3-scale](https://github.com/d3/d3-scale). If _scale_ is not specified, returns the current color scale, which defaults to `d3.scaleSequential(d3.interpolateGreens)`.
 
 <a name="heatmap_enableInteraction" href="#heatmap_enableInteraction">#</a> <i>heatmap</i>.<b>enableInteraction</b>([<i>enable</i>])
 

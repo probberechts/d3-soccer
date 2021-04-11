@@ -18,8 +18,12 @@
 var pitch_height = 500;
 var header_height = 120;
 
-d3.json("data/debruyne_actions_heatmap.json").then(data => {
-
+d3.json("https://raw.githubusercontent.com/statsbomb/open-data/master/data/events/8650.json").then(data => {
+  var filtData = data.filter(d => (
+    d.hasOwnProperty("location") 
+    && d.hasOwnProperty("player") 
+    && d.type.id === 42 
+    && d.player.id === 3089));
   var hed = d3.header()
     .hed('Kevin De Bruyne')
     .subhed('Ball touches')
@@ -27,39 +31,44 @@ d3.json("data/debruyne_actions_heatmap.json").then(data => {
   var pitch = d3.pitch()
     .height(pitch_height)
     .rotate(false);
-  var heatmap = d3.heatmap(pitch).interpolate(true);
-  var tooltip = d3.actionTooltip();
-  d3.select("#chart")
-    .call(tooltip);
+  var heatmap = d3.heatmap(pitch)
+    .interpolate(true);
 
+  var x = d3.scaleLinear()
+    .domain([0, 120])
+    .range([0, 105]);
+  var y = d3.scaleLinear()
+    .domain([0, 80])
+    .range([0, 68]);
+  var rectbin = d3.rectbin()
+    .x(d => x(d.location[0]))
+    .y(d => y(d.location[1]))
+    .dx(105/10)
+    .dy(68/10);
+  var rectbinData = rectbin(filtData);
+  
   var svg = d3.select("#chart")
-    .append("svg")
-    // .attr("class", "dark-theme")
-    .attr("width", pitch.width() + 40)
-    .attr("height", pitch_height + header_height + 60);
+  .append("svg")
+  .attr("width", pitch.width() + 40)
+  .attr("height", pitch_height + header_height + 60);
 
   svg.append("g")
     .attr('transform', `translate(20,${header_height + 20})`)
-    .datum(data)
-    .call(heatmap)
+     .datum(rectbinData)
+     .call(heatmap)
 
-  d3.json("data/debruyne_actions.json").then(data => {
-    svg.select("#above")
-      .datum(data)
+  svg.select("#above")
     .append('g')
-        .selectAll("dot")
-        .data(data)
-        .enter()
-        .append("circle")
-          .attr("cx", function (d) { return d.start_x; } )
-          .attr("cy", function (d) { return d.start_y; } )
-          .attr("r", .5)
-          .attr("fill", "crimson")
-          .attr("stroke", "#white")
-          .attr("stroke-width", .1)
-          .on('mouseover', d => tooltip.show(d))
-          .on('mouseout', () => tooltip.hide())
-  })
+    .selectAll("dot")
+    .data(filtData)
+    .enter()
+    .append("circle")
+    .attr("cx", (d) => x(d.location[0]))
+    .attr("cy", (d) => y(d.location[1]))
+    .attr("r", .5)
+    .attr("fill", "crimson")
+    .attr("stroke", "#white")
+    .attr("stroke-width", .1)
 
   svg.append('g')
     .attr("transform", "translate(30,30)")

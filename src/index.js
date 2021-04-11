@@ -1,5 +1,5 @@
 export { default as pitch } from './charts/pitch';
-export { default as heatmap } from './charts/heatmap';
+export { default as heatmap, grid, rectbin } from './charts/heatmap';
 export { default as actions } from './charts/actions';
 export { default as actionsTable } from './charts/actions_table';
 export { default as actionTooltip } from './charts/action_tooltip';
