@@ -19,6 +19,10 @@ var svg = d3.select("#chart").call(pitch);
 </script>
 ```
 
+## Examples
+
+An introduction to the features and basic usage of d3-soccer can found in [this notebook](https://observablehq.com/@probberechts/d3-soccer). For additional examples, see the [examples folder in this repo](example) or [this collection of notebooks](https://observablehq.com/collection/@probberechts/d3-soccer).
+
 ## API Reference
 
 <a name="pitch" href="#pitch">#</a> d3.<b>pitch</b>()
@@ -80,8 +84,8 @@ Render the heatmap to the given *context*, which may be either a [selection](htt
   {
     height: 0.99,  // height of the cell
     width: 0.99,   // width of the cell
-    x: 4.95,       // x-index of the cell
-    y: 54.20,      // x-index of the cell
+    x: 4.95,       // x-position of the cell
+    y: 54.20,      // y-position of the cell
     i: 5,          // x-index of the cell
     j: 55,         // y-index of the cell
     value: 0       // value of the cell
