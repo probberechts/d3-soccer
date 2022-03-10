@@ -15,16 +15,13 @@ import sorting from 'postcss-sorting';
 import nested from 'postcss-nested';
 import stylelint from 'rollup-plugin-stylelint';
 
-// ------ templates
-import pug from 'rollup-plugin-pug';
-
 // ------ global
 import resolve from 'rollup-plugin-node-resolve';
 
 
 const plugins = [
   eslint({
-    exclude: ['src/styles/*.css', 'src/templates/*.pug']
+    exclude: ['src/styles/*.css']
   }),
   stylelint({
     include: ['src/styles/*.css']
@@ -47,7 +44,6 @@ const plugins = [
     extensions: ['.css'],
     minimize: true
   }),
-  pug(),
   // terser(),
   resolve(),
   commonjs()
