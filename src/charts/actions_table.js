@@ -1,7 +1,7 @@
 import { select as d3Select } from "d3-selection";
-import { actiontypePlotFn } from './actions';
-import { spadlActionTypes, spadlBodyparts, spadlResults } from  '../config';
-import css from '../styles/styles.css';
+import { actiontypePlotFn } from './actions.js';
+import { spadlActionTypes, spadlBodyparts, spadlResults } from  '../config.js';
+// import css from '../styles/styles.css';
 
 export default function() {
 
@@ -21,6 +21,8 @@ export default function() {
     var table = g.append("table"),
       thead = table.append("thead"),
       tbody = table.append("tbody")
+
+    table.attr("class", "actions-table");
 
     // append the header row
     thead.append("tr")
@@ -49,7 +51,8 @@ export default function() {
       }
 
       // create the table
-      var elTable = d3Select(this).attr('class', css.actions_table);
+      var elTable = d3Select(this)
+        // .attr('class', css.actions_table);
       var tbody = tabulate(elTable, tableColumns);
 
       // Update the table

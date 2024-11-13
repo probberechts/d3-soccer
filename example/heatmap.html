@@ -1,35 +1,40 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-  <title>D3 soccer</title>
-</head>
-<body>
+	<head>
+		<title>D3 soccer</title>
+		<link rel="stylesheet" href="./dist/d3-soccer.css" />
+	</head>
+	<body>
+		<div id="chart" class="d3-soccer light-theme"></div>
+		<div id="value">Tip: Hover over the heatmap</div>
 
-<div id="chart" class="light-theme"></div>
-<div id="value">Tip: Hover over the heatmap</div>
+		<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+		<script type="text/javascript" src="./dist/d3-soccer.js"></script>
+		<script type="text/javascript">
+			var pitch_height = 300;
 
-<script src="https://d3js.org/d3.v5.min.js"></script>
-<script type="text/javascript" src="./dist/d3-soccer.js"></script>
-<script type="text/javascript">
-
-var pitch_height = 300;
-
-d3.json("data/xg_heatmap.json").then(data => {
-  var pitch = d3.pitch()
-    .height(pitch_height)
-    .clip([[0,0],[68,34]])
-    .rotate(true);
-  var grid = d3.grid();
-  var heatmap = d3.heatmap(pitch)
-    .colorScale(d3.scaleSequential(t => d3.interpolateMagma(1-t)))
-    .enableInteraction(true)
-    .onSelect((x,y,v) => d3.select('#value').text(`The xG value on the selected location is ${v}`))
-    .interpolate(true);
-  d3.select("#chart")
-    .datum(grid(data))
-    .call(heatmap)
-})
-
-</script>
-</body>
+			d3.json("data/xg_heatmap.json").then((data) => {
+				var pitch = d3
+					.pitch()
+					.height(pitch_height)
+					.clip([
+						[0, 0],
+						[68, 34],
+					])
+					.rotate(true);
+				var grid = d3.grid();
+				var heatmap = d3
+					.heatmap(pitch)
+					.colorScale(d3.scaleSequential((t) => d3.interpolateMagma(1 - t)))
+					.enableInteraction(true)
+					.onSelect((x, y, v) =>
+						d3
+							.select("#value")
+							.text(`The xG value on the selected location is ${v}`),
+					)
+					.interpolate(true);
+				d3.select("#chart").datum(grid(data)).call(heatmap);
+			});
+		</script>
+	</body>
 </html>

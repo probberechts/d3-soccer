@@ -1,7 +1,6 @@
 import { select as d3Select } from "d3-selection";
 import { arc as d3Arc } from "d3-shape";
-import { pitchLenght, pitchWidth } from "../config";
-import css from '../styles/styles.css';
+import { pitchLenght, pitchWidth } from "../config.js";
 
 
 export default function() {
@@ -18,16 +17,16 @@ export default function() {
   function drawGoalsAsBox(lines) {
     lines
       .append("rect")
-      .style("stroke-width", pitchstrokewidth)
-      .style("fill", "none")
+      .attr("stroke-width", pitchstrokewidth)
+      .attr("fill", "none")
       .attr("x", -2)
       .attr("y", pitchWidth/2 - 3.66)
       .attr("width", 2)
       .attr("height", 7.32);
     lines
       .append("rect")
-      .style("stroke-width", pitchstrokewidth)
-      .style("fill", "none")
+      .attr("stroke-width", pitchstrokewidth)
+      .attr("fill", "none")
       .attr("x", pitchLenght)
       .attr("y", pitchWidth/2 - 3.66)
       .attr("width", 2)
@@ -37,22 +36,22 @@ export default function() {
   function drawGoalsAsLine(lines) {
     lines
       .append("rect")
-      .style("stroke-width", 0)
+      .attr("stroke-width", 0)
       .attr("x", -pitchstrokewidth*1.5)
       .attr("y", pitchWidth/2 - 3.66)
       .attr("width", pitchstrokewidth*3)
       .attr("height", 7.32);
     lines
       .append("rect")
-      .style("stroke-width", 0)
+      .attr("stroke-width", 0)
       .attr("x", pitchLenght-pitchstrokewidth*1.5)
       .attr("y", pitchWidth/2 - 3.66)
       .attr("width", pitchstrokewidth*3)
       .attr("height", 7.32);
   }
 
-  function chart(g) {
-    g.each(function() {
+  function chart(selection) {
+    selection.each(function() {
       var pitch = d3Select(this).append("svg")
         .attr("width", width)
         .attr("height", height)
@@ -74,21 +73,22 @@ export default function() {
           return `-2 -2 ${xdim} ${ydim}`
         })
         .append("g")
-        .attr("id", "pitch")
+        .attr("class", "pitch")
         .attr("transform", `translate(${- clip.left}, ${- clip.top})rotate(${rotated ? -90 : 0} 0 0)translate(${rotated ? -105 : 0} 0)`);
 
       pitch.append("g")
-        .attr("id", "below")
+        .attr("class", "below")
 
       var lines = pitch.append("g")
-        .attr("id", "lines")
-        .attr("class", css.pitch)
+        .attr("class", "lines")
+        .attr("stroke", "#000")
+        .attr("fill", "#000")
         .attr("pointer-events", "none")
 
       // Halfway line
       lines
         .append("line")
-        .style("stroke-width", pitchstrokewidth)
+        .attr("stroke-width", pitchstrokewidth)
         .attr("x1", pitchLenght / 2)
         .attr("y1", 0)
         .attr("x2", pitchLenght / 2)
@@ -97,14 +97,14 @@ export default function() {
       // Centre circle 
       lines
         .append("circle")
-        .style("stroke-width", pitchstrokewidth)
-        .style("fill", 'none')
+        .attr("stroke-width", pitchstrokewidth)
+        .attr("fill", 'none')
         .attr("cx", pitchLenght / 2)
         .attr("cy", pitchWidth / 2)
         .attr("r", 9.15);
       lines
         .append("circle")
-        .style("stroke-width", 0)
+        .attr("stroke-width", 0)
         .attr("cx", pitchLenght / 2)
         .attr("cy", pitchWidth / 2)
         .attr("r", pitchstrokewidth);
@@ -116,7 +116,7 @@ export default function() {
         .startAngle(38 * (Math.PI/180)) //converting from degs to radians
         .endAngle(142 * (Math.PI/180)); //just radians
       lines.append("path")
-        .style("stroke-width", pitchstrokewidth)
+        .attr("stroke-width", pitchstrokewidth)
         .attr("d", arc1)
         .attr("transform", "translate(11,"+pitchWidth/2+")");
       var arc2 = d3Arc()
@@ -125,23 +125,23 @@ export default function() {
         .startAngle(218 * (Math.PI/180)) //converting from degs to radians
         .endAngle(322 * (Math.PI/180)); //just radians
       lines.append("path")
-        .style("stroke-width", pitchstrokewidth)
+        .attr("stroke-width", pitchstrokewidth)
         .attr("d", arc2)
         .attr("transform", "translate(" + (pitchLenght - 11) +","+pitchWidth/2+")");
 
       // Goal areas
       lines
         .append("rect")
-        .style("stroke-width", pitchstrokewidth)
-        .style("fill", 'none')
+        .attr("stroke-width", pitchstrokewidth)
+        .attr("fill", 'none')
         .attr("x", 0)
         .attr("y", pitchWidth/2 - 9.16)
         .attr("width", 5.5)
         .attr("height", 18.32);
       lines
         .append("rect")
-        .style("stroke-width", pitchstrokewidth)
-        .style("fill", 'none')
+        .attr("stroke-width", pitchstrokewidth)
+        .attr("fill", 'none')
         .attr("x", pitchLenght-5.5)
         .attr("y", pitchWidth/2 - 9.16)
         .attr("width", 5.5)
@@ -150,16 +150,16 @@ export default function() {
       // Penalty areas
       lines
         .append("rect")
-        .style("stroke-width", pitchstrokewidth)
-        .style("fill", "none")
+        .attr("stroke-width", pitchstrokewidth)
+        .attr("fill", "none")
         .attr("x", 0)
         .attr("y", pitchWidth/2 - 20.16)
         .attr("width", 16.5)
         .attr("height", 40.32);
       lines
         .append("rect")
-        .style("stroke-width", pitchstrokewidth)
-        .style("fill", "none")
+        .attr("stroke-width", pitchstrokewidth)
+        .attr("fill", "none")
         .attr("x", pitchLenght-16.5)
         .attr("y", pitchWidth/2 - 20.16)
         .attr("width", 16.5)
@@ -168,13 +168,13 @@ export default function() {
       // Penalty marks
       lines
         .append("circle")
-        .style("stroke-width", 0)
+        .attr("stroke-width", 0)
         .attr("cx", 11)
         .attr("cy", pitchWidth/2)
         .attr("r", pitchstrokewidth);
       lines
         .append("circle")
-        .style("stroke-width", 0)
+        .attr("stroke-width", 0)
         .attr("cx", pitchLenght-11)
         .attr("cy", pitchWidth/2)
         .attr("r", pitchstrokewidth);
@@ -182,7 +182,9 @@ export default function() {
       // Direction of play
       if (dirOfPlay) {
         lines.append("polygon")
-          .attr("class", css.shaded)
+          .attr("opacity", 0.1)
+          .attr("stroke-width", 0)
+          .attr("class", "shaded")
           .attr("points", `
                   25,${pitchWidth/2 - 2} 
                   35,${pitchWidth/2 - 2} 
@@ -198,7 +200,7 @@ export default function() {
       // Pitch boundaries
       lines
         .append("rect")
-        .style("stroke-width", pitchstrokewidth)
+        .attr("stroke-width", pitchstrokewidth)
         .attr("fill", "none")
         .attr("x", 0)
         .attr("y", 0)
@@ -209,14 +211,14 @@ export default function() {
       drawGoalsFn(lines);
 
       pitch.append("g")
-        .attr("id", "above")
+        .attr("class", "above")
 
       // Middle third
       if (shadeMiddleThird) {
         lines
           .append("rect")
-          .attr("class", css.shaded)
-          .attr("fill", "#fff")
+          .attr("opacity", 0.1)
+          .attr("class", "shaded")
           .attr("x", 35)
           .attr("y", 0)
           .attr("width", 35)

@@ -1,0 +1,116 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+
+.dark-theme {
+  --color-text: #fff;
+  --color-primary: #43FCD5;
+  --color-meta: #f3efef;
+
+  --pitch-line-color: #ccc;
+  --pitch-shade-color: #ccc;
+}
+
+.light-theme {
+  --color-text: #000;
+  --color-primary: #333;
+  --color-meta: #808080;
+
+  --pitch-line-color: #808080;
+  --pitch-shade-color: #808080;
+}
+
+.d3-soccer {
+  font-family: "Open Sans";
+  color: var(--color-text);
+
+  .pitch {
+    .lines {
+      stroke: var(--pitch-line-color);
+      fill: var(--pitch-line-color);
+    }
+
+    .shaded {
+      fill: var(--pitch-shade-color);
+      opacity: .1;
+      stroke: 0;
+    }
+  }
+
+  .tooltip {
+    font-family: "Open Sans";
+    background: #fff;
+    align-items: center;
+    transform: translateX(20px) translateY(0%) translateY(-14px);
+    opacity: 0;
+    display: flex;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, .16);
+
+    table {
+      border-collapse: collapse;
+      border-spacing: 0;
+      background-color: #fff;
+      empty-cells: show;
+      box-shadow: 7px 7px 12px -9px #777;
+      opacity: .9;
+
+      th {
+        background-color: #aaa;
+        font-size: 14px;
+        padding: 2px 5px;
+        text-align: left;
+        color: #fff;
+      }
+
+      tr {
+        border: 1px solid #ccc;
+      }
+
+      td {
+        font-size: 13px;
+        padding: 3px 6px;
+        background-color: #fff;
+        border-left: 1px dotted #999;
+      }
+    }
+  }
+
+  .header {
+    .h1 {
+      font-size: 32px;
+      fill: var(--color-primary);
+    }
+
+    .h2 {
+      font-size: 21px;
+      fill: var(--color-meta);
+    }
+
+    .circle {
+      stroke: var(--color-meta);
+    }
+  }
+
+  table.actions-table {
+    font-size: .8em;
+
+    :last-child {
+      margin-bottom: 0;
+    }
+
+    border-collapse: collapse;
+    background-color: transparent;
+
+    th {
+      padding: 8px 5px;
+      line-height: 1.625;
+      vertical-align: bottom;
+      border-bottom: 2px solid #d8d9da;
+    }
+
+    td {
+      padding: 8px 5px;
+      line-height: 1.625;
+      vertical-align: top;
+      border-top: 1px solid #ededed;
+    }
+  }
+}

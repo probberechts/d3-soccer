@@ -5,7 +5,7 @@
 
 build_dir="dist"
 example_dir="example"
-entry_point="src/index.js"
+entry_point="build.js"
 target_point="d3-soccer"
 
 # Delete example/build dir
@@ -13,7 +13,6 @@ rm -rf $example_dir/$build_dir
 
 # Create a build folder
 mkdir $example_dir/$build_dir/
-
 
 rollup -c #-f umd -n d3 -o $build_dir/$target_point.js -- $entry_point
 

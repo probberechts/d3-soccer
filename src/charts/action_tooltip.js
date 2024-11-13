@@ -1,6 +1,6 @@
-import { select as d3Select, event as d3Event } from "d3-selection";
-import { spadlActionTypes, spadlBodyparts, spadlResults } from '../config';
-import css from '../styles/styles.css';
+import { select as d3Select, pointer as d3Pointer } from "d3-selection";
+import { spadlActionTypes, spadlBodyparts, spadlResults } from '../config.js';
+// import css from '../styles/styles.css';
 
 export default function() {
 
@@ -10,12 +10,16 @@ export default function() {
       if (!tooltip.size()) {
         tooltip = g
           .append("div")
-          .attr("class", css.tooltip)
+          .style("position", "absolute")
+          .style("pointer-events", "none")
+          .style("z-index", 6)
+          .style("opacity", 0)
+          .attr("class", "tooltip")
           .attr("id", "tooltip");
       }
   }
 
-  chart.show = function (d) {
+  chart.show = function (e, d) {
       tooltip
       .html(`
         <table>
@@ -51,10 +55,11 @@ export default function() {
           </tr>
         </table>
       `)
+      let [x, y] = d3Pointer(e, document.body);
       tooltip
         .style("opacity", .95)
-        .style("left", d3Event.pageX + "px")
-        .style("top", d3Event.pageY + "px");
+        .style("left", x + "px")
+        .style("top", y + "px");
     return chart;
   };
 

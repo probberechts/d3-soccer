@@ -10,18 +10,18 @@
 		<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
 		<script type="text/javascript" src="./dist/d3-soccer.js"></script>
 		<script type="text/javascript">
-			var pitch = d3
-				.pitch()
-				.height(300)
-				.clip([
-					[0, 0],
-					[105, 68],
-				])
-				.goals("line")
-				.rotate(false)
-				.showDirOfPlay(true)
-				.shadeMiddleThird(false);
-			var svg = d3.select("#chart").call(pitch);
+			var hed = d3
+				.matchHeader()
+				.hed("Premier League | 2021-2022")
+				.logoHome("img/logo_city.svg")
+				.logoAway("img/logo_wolves.svg")
+				.score([1, 0]);
+			var svg = d3
+				.select("#chart")
+				.append("svg")
+				.attr("width", "100%")
+				.attr("transform", "translate(30,30)")
+				.call(hed);
 		</script>
 	</body>
 </html>

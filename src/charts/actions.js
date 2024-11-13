@@ -1,4 +1,4 @@
-import { select as d3Select, mouse as d3Mouse } from "d3-selection";
+import { select as d3Select, pointer as d3Pointer } from "d3-selection";
 import { drag as d3Drag } from "d3-drag";
 import { hsl as d3HSL } from "d3-color";
 import { symbol as d3Symbol, symbolTriangle as d3SymbolTriangle, symbolCross as d3SymbolCross} from "d3-shape";
@@ -26,7 +26,7 @@ export default function(pitch) {
   function chart(g) {
     g.each(function (data) {
       // Create the soccer pitch
-      var actionsLayer = d3Select(this).call(pitch).select("#above");
+      var actionsLayer = d3Select(this).call(pitch).select(".above");
 
       // Create an arrow symbol
       actionsLayer.append("svg:defs").append("svg:marker")
@@ -45,7 +45,7 @@ export default function(pitch) {
           d3Select(this).classed("active", true);
         })
         .on("drag", function (d) {
-          var [x, y] = d3Mouse(actionsLayer.node());
+          var [x, y] = d3Pointer(actionsLayer.node());
           var marker = d3Select(this).attr("marker");
           d3Select(this)
             .attr("transform", "translate(" + (x)  + "," + (y) + ")");
@@ -65,7 +65,7 @@ export default function(pitch) {
           }
         })
         .on("end", function(d) {
-          var [x, y] = d3Mouse(actionsLayer.node());
+          var [x, y] = d3Pointer(actionsLayer.node());
           var marker = d3Select(this).attr("marker");
           d3Select(this).classed("active", false);
           var newData = data.slice()
@@ -107,7 +107,7 @@ export default function(pitch) {
               .attr('id', `action-${d.action_id}`)
               .call(actiontypePlotFn[d.type_id]["plot"], d, (i+1), teamColors[d.team_id], scale);
             action.selectAll('g.symbol')
-              .on('mouseover', d => showTooltip && showTooltip.show(d))
+              .on('mouseover', (e, d) => showTooltip && showTooltip.show(e, d))
               .on('mouseout', () => showTooltip && showTooltip.hide())
           })
 
@@ -119,7 +119,7 @@ export default function(pitch) {
             .attr('id', `action-${d.action_id}`)
             .call(actiontypePlotFn[d.type_id]["plot"], d, (i+1), teamColors[d.team_id], scale);
           action.selectAll('g.symbol')
-              .on('mouseover', d => showTooltip && showTooltip.show(d))
+              .on('mouseover', (e, d) => showTooltip && showTooltip.show(e, d))
               .on('mouseout', () => showTooltip && showTooltip.hide())
         })
 

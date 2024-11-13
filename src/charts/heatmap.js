@@ -3,7 +3,7 @@ import { max as d3Max, extent as d3Extent } from "d3-array";
 import { rgb as d3Rgb } from "d3-color";
 import { scaleSequential as d3ScaleSequential } from "d3-scale";
 import * as colorScale from 'd3-scale-chromatic';
-import { pitchLenght, pitchWidth } from "../config";
+import { pitchLenght, pitchWidth } from "../config.js";
 import { createGridInterpolator } from 'bicubic-interpolate';
 
 
@@ -152,7 +152,7 @@ export default function(pitch) {
         color.domain(d3Extent(data, d => d.value));
       }
 
-      var draw = g.call(pitch).select("#below");
+      var draw = g.call(pitch).select(".below");
 
       var join = draw
         .selectAll("rect.cell") // these
@@ -171,14 +171,14 @@ export default function(pitch) {
         .style("stroke-width", function(d) { return (selx === d.x && sely === d.y) ? selStrokewidth : strokewidth; })
         .style("fill", function(d) { return interpolated ? 'transparent' : color(+d.value); })
         .style("cursor", enableInteraction ? "crosshair" : "default")
-        .on('mouseover', function (d) {
+        .on('mouseover', function (e, d) {
           if (enableInteraction)
             d3Select(this)
               .style('stroke', selStroke)
               .style('stroke-width', selStrokewidth)
           onSelect(d.x, d.y, d.value);
         })
-        .on('mouseout', function (d) {
+        .on('mouseout', function (e, d) {
           if (enableInteraction)
             d3Select(this)
               .style('stroke', stroke)
@@ -188,7 +188,7 @@ export default function(pitch) {
 
       join
         .merge(enterSel)
-        .transition()
+        //.transition()
         .attr("x", d => d.x)
         .attr("y", d => d.y)
         .attr("width", d => d.width)
@@ -197,7 +197,7 @@ export default function(pitch) {
         .style("fill", function(d) { return interpolated ? 'transparent' : color(+d.value); });
 
       join.exit()
-        .transition()
+        //.transition()
         .attr('width', 0)
         .attr('height', 0)
         .remove();
@@ -219,7 +219,7 @@ export default function(pitch) {
             .style("z-index", -1)
             .style("position", 'absolute')
             .style("pointer-events", 'none')
-          var bbox = position(g.select('#below'), d3Select(parent_el));
+          var bbox = position(draw, d3Select(parent_el));
           var n = parseInt(bbox.height);
           var m = parseInt(bbox.width);
           var scaleX = (pitch.clip()[1][0] - pitch.clip()[0][0]) / 105;

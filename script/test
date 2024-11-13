@@ -17,7 +17,7 @@ echo "SUCCESS"
 echo -e "\033[0m";
 
 echo -e "\033[35m";
-tape test/**/*-test.js | faucet
+tape test/**/*-test.js
 echo -e "\033[0m";
 
 echo " "

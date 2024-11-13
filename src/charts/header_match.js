@@ -25,16 +25,17 @@ export default function() {
         .attr("y", 25);
       scoreboard.append('text')
         .attr("x", 0)
-        .attr("y", 10)
-        .style("font-size", "16px")
-        .style('fill', 'grey')
+        .attr("y", 5)
+        .attr('dominant-baseline', 'hanging')
+        .attr("font-size", '16px')
+        .attr("fill", '#333')
         .text(hed);
       scoreboard.append('text')
         .attr("x", 55)
         .attr("y", 55)
         .attr("font-weight", 'bold')
-        .style("font-size", "32px")
-        .style('fill', 'black')
+        .attr("font-size", "32px")
+        .attr("fill", 'black')
         .text(`${score[0]} : ${score[1]}`);
     })
   }

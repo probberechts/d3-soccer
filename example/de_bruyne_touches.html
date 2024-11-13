@@ -1,90 +1,89 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-  <title>D3 soccer</title>
-    <style type="text/css">
-    svg {
-      margin: 50px;
-    }
-  </style>
-</head>
-<body>
+	<head>
+		<title>D3 soccer</title>
+		<style type="text/css">
+			svg {
+				margin: 50px;
+			}
+		</style>
+		<link rel="stylesheet" href="./dist/d3-soccer.css" />
+	</head>
+	<body>
+		<div id="chart" class="d3-soccer light-theme"></div>
 
-<div id="chart" class="light-theme"></div>
+		<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+		<script type="text/javascript" src="./dist/d3-soccer.js"></script>
+		<script type="text/javascript">
+			var pitch_height = 500;
+			var header_height = 120;
 
-<script src="https://d3js.org/d3.v5.min.js"></script>
-<script type="text/javascript" src="./dist/d3-soccer.js"></script>
-<script type="text/javascript">
-var pitch_height = 500;
-var header_height = 120;
+			d3.json(
+				"https://raw.githubusercontent.com/statsbomb/open-data/master/data/events/8650.json",
+			).then((data) => {
+				var filtData = data.filter(
+					(d) =>
+						d.hasOwnProperty("location") &&
+						d.hasOwnProperty("player") &&
+						d.type.id === 42 &&
+						d.player.id === 3089,
+				);
+				var hed = d3
+					.header()
+					.hed("Kevin De Bruyne")
+					.subhed("Ball touches")
+					.img("img/debruyne.png");
+				var pitch = d3.pitch().height(pitch_height).rotate(false);
+				var heatmap = d3.heatmap(pitch).interpolate(true);
 
-d3.json("https://raw.githubusercontent.com/statsbomb/open-data/master/data/events/8650.json").then(data => {
-  var filtData = data.filter(d => (
-    d.hasOwnProperty("location") 
-    && d.hasOwnProperty("player") 
-    && d.type.id === 42 
-    && d.player.id === 3089));
-  var hed = d3.header()
-    .hed('Kevin De Bruyne')
-    .subhed('Ball touches')
-    .img('img/debruyne.png');
-  var pitch = d3.pitch()
-    .height(pitch_height)
-    .rotate(false);
-  var heatmap = d3.heatmap(pitch)
-    .interpolate(true);
+				var x = d3.scaleLinear().domain([0, 120]).range([0, 105]);
+				var y = d3.scaleLinear().domain([0, 80]).range([0, 68]);
+				var rectbin = d3
+					.rectbin()
+					.x((d) => x(d.location[0]))
+					.y((d) => y(d.location[1]))
+					.dx(105 / 10)
+					.dy(68 / 10);
+				var rectbinData = rectbin(filtData);
 
-  var x = d3.scaleLinear()
-    .domain([0, 120])
-    .range([0, 105]);
-  var y = d3.scaleLinear()
-    .domain([0, 80])
-    .range([0, 68]);
-  var rectbin = d3.rectbin()
-    .x(d => x(d.location[0]))
-    .y(d => y(d.location[1]))
-    .dx(105/10)
-    .dy(68/10);
-  var rectbinData = rectbin(filtData);
-  
-  var svg = d3.select("#chart")
-  .append("svg")
-  .attr("width", pitch.width() + 40)
-  .attr("height", pitch_height + header_height + 60);
+				var svg = d3
+					.select("#chart")
+					.append("svg")
+					.attr("width", pitch.width() + 40)
+					.attr("height", pitch_height + header_height + 60);
 
-  svg.append("g")
-    .attr('transform', `translate(20,${header_height + 20})`)
-     .datum(rectbinData)
-     .call(heatmap)
+				svg
+					.append("g")
+					.attr("transform", `translate(20,${header_height + 20})`)
+					.datum(rectbinData)
+					.call(heatmap);
 
-  svg.select("#above")
-    .append('g')
-    .selectAll("dot")
-    .data(filtData)
-    .enter()
-    .append("circle")
-    .attr("cx", (d) => x(d.location[0]))
-    .attr("cy", (d) => y(d.location[1]))
-    .attr("r", .5)
-    .attr("fill", "crimson")
-    .attr("stroke", "#white")
-    .attr("stroke-width", .1)
+				svg
+					.select("#above")
+					.append("g")
+					.selectAll("dot")
+					.data(filtData)
+					.enter()
+					.append("circle")
+					.attr("cx", (d) => x(d.location[0]))
+					.attr("cy", (d) => y(d.location[1]))
+					.attr("r", 0.5)
+					.attr("fill", "crimson")
+					.attr("stroke", "#white")
+					.attr("stroke-width", 0.1);
 
-  svg.append('g')
-    .attr("transform", "translate(30,30)")
-    .call(hed);
+				svg.append("g").attr("transform", "translate(30,30)").call(hed);
 
-  svg.append('text')
-    .attr('x', pitch.width())
-    .attr('y', header_height + pitch_height + 40)
-    .attr('text-anchor', 'end')
-    .style("fill", "grey")
-    .style("font-style", "italic")
-    .style("font-size", "11px")
-    .text("Data provided by StatsBomb");
-
-})
-
-</script>
-</body>
+				svg
+					.append("text")
+					.attr("x", pitch.width())
+					.attr("y", header_height + pitch_height + 40)
+					.attr("text-anchor", "end")
+					.style("fill", "grey")
+					.style("font-style", "italic")
+					.style("font-size", "11px")
+					.text("Data provided by StatsBomb");
+			});
+		</script>
+	</body>
 </html>

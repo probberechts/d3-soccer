@@ -1,69 +1,48 @@
-import * as meta from "./package.json";
+import * as meta from "./package.json" assert { type: "json" };
 
 // ------ JavaScript
-import babel from 'rollup-plugin-babel';
-import { eslint } from 'rollup-plugin-eslint';
-import { terser } from 'rollup-plugin-terser';
-import commonjs from 'rollup-plugin-commonjs';
+import { babel } from '@rollup/plugin-babel';
+import commonjs from '@rollup/plugin-commonjs';
+import eslint from '@rollup/plugin-eslint';
+import terser from '@rollup/plugin-terser';
 
-// ------ postCSS
-import postcss from 'rollup-plugin-postcss';
-import atImport from 'postcss-import';
-import selector from 'postcss-custom-selectors';
-import customProperties from 'postcss-custom-properties';
-import sorting from 'postcss-sorting';
-import nested from 'postcss-nested';
-import stylelint from 'rollup-plugin-stylelint';
+// ------ CSS
+import sass from 'rollup-plugin-sass';
 
 // ------ global
-import resolve from 'rollup-plugin-node-resolve';
+import resolve from '@rollup/plugin-node-resolve';
 
 
 const plugins = [
   eslint({
-    exclude: ['src/styles/*.css']
-  }),
-  stylelint({
-    include: ['src/styles/*.css']
+    include: ['src/**/*.js']
   }),
   babel({
-    exclude: ['node_modules/**'],
+    babelHelpers: 'bundled',
     include: 'src/**',
     presets: ['@babel/preset-env']
   }),
-  postcss({
-    extract: false,
-    modules: true,
-    plugins: [
-      atImport(),
-      selector(),
-      customProperties(),
-      sorting(),
-      nested()
-    ],
-    extensions: ['.css'],
-    minimize: true
-  }),
   // terser(),
+  sass({ output: true }),
   resolve(),
   commonjs()
 ];
 
 const config = {
   input: 'src/index.js',
-  external: Object.keys(meta.dependencies || {}).filter(key => /^d3-/.test(key)),
+  external: Object.keys(meta.default.dependencies || {}).filter(key => /^d3-/.test(key)),
   output: {
-    file: `dist/${meta.name}.js`,
+    file: `dist/${meta.default.name}.js`,
     name: "d3",
     format: "umd",
     indent: false,
     extend: true,
-    banner: `// ${meta.homepage} v${meta.version} Copyright ${(new Date).getFullYear()} ${meta.author.name}`,
-    globals: Object.assign({}, ...Object.keys(meta.dependencies || {}).filter(key => /^d3-/.test(key)).map(key => ({[key]: "d3"})))
+    banner: `// ${meta.default.homepage} v${meta.default.version} Copyright ${(new Date).getFullYear()} ${meta.default.author.name}`,
+    globals: Object.assign({}, ...Object.keys(meta.default.dependencies || {}).filter(key => /^d3-/.test(key)).map(key => ({[key]: "d3"})))
   },
   watch: {
     chokidar: false,
-    include: ['src/**', 'example/*.html', 'example/data/*.*']
+    include: ['src/**', 'styles/**', 'example/*.html', 'example/data/*.*']
   },
   plugins
 };
@@ -74,7 +53,7 @@ export default [
     ...config,
     output: {
       ...config.output,
-      file: `dist/${meta.name}.min.js`
+      file: `dist/${meta.default.name}.min.js`
     },
     plugins: [
       ...config.plugins,

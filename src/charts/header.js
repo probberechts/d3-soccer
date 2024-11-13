@@ -1,5 +1,4 @@
 import { select as d3Select } from "d3-selection";
-import css from '../styles/styles.css';
 
 export default function() {
 
@@ -10,8 +9,7 @@ export default function() {
   function chart(g) {
     g.each(function() {
       var header = d3Select(this).append('g')
-        .attr('id', 'header')
-        .attr('class', css.header);
+        .attr('class', 'header')
 
       var defs = header.append("defs").attr("id", "imgdefs")
 
@@ -28,21 +26,26 @@ export default function() {
         .attr("xlink:href", img)
 
       header.append("circle")
-        .attr("class", css.circle)
+         .attr("class", "circle")
         .attr("r", 40)
         .attr("cy", 50)
         .attr("cx", 50)
+        .attr("stroke", "#333")
         .attr("fill", "url(#imgpattern)")
       header.append('text')
-        .attr("class", css.h2)
+         .attr("class", "h2")
         .attr("x", 110)
         .attr("y", 40)
+        .attr("font-size", '21px')
+        .attr("fill", '#333')
         .text(subhed);
       header.append('text')
-        .attr("class", css.h1)
+         .attr("class", "h1")
         .attr("x", 110)
         .attr("y", 80)
         .attr("font-weight", 'bold')
+        .attr("font-size", '32px')
+        .attr("fill", 'black')
         .text(hed);
     })
   }

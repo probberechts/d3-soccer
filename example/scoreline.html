@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+	<head>
+		<title>D3 soccer</title>
+		<style type="text/css">
+			#chart > svg {
+				margin: 50px;
+			}
+		</style>
+		<link rel="stylesheet" href="./dist/d3-soccer.css" />
+	</head>
+	<body class="d3-soccer light-theme">
+		<div id="chart"></div>
+
+		<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+		<script type="text/javascript" src="./dist/d3-soccer.js"></script>
+		<script type="text/javascript">
+			var scoreline = d3
+				.scoreline()
+				.teams([
+					{ label: "BEL", color: "#EF3340" },
+					{ label: "BRA", color: "#FDB913" },
+				])
+				.score([2, 0])
+				.clock(30);
+
+			var svg = d3
+				.select("#chart")
+				.append("svg")
+				.attr("width", "100%")
+				.append("g")
+				.attr("transform", "translate(16, 0)")
+				.call(scoreline);
+		</script>
+	</body>
+</html>
