@@ -11,8 +11,9 @@ A D3 plugin for visualizing event stream soccer data.
 If you use NPM, `npm install d3-soccer`. Otherwise, download the [latest release](https://github.com/probberechts/d3-soccer/releases/latest). AMD, CommonJS, and vanilla environments are supported. In vanilla, a d3 global is exported:
 
 ```html
+<link rel='stylesheet' href='https://unpkg.com/d3-soccer@0.2.0/dist/d3-soccer.css' />
 <script src="https://d3js.org/d3.v5.min.js"></script>
-<script type="text/javascript" src="./dist/d3-soccer.js"></script>
+<script type="text/javascript" src="https://unpkg.com/d3-soccer@0.2.0/dist/d3-soccer.js"></script>
 <script type="text/javascript">
 var pitch = d3.pitch();
 var svg = d3.select("#chart").call(pitch);
