@@ -22,7 +22,7 @@
   "jsdelivr": "dist/d3-soccer.min.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/probberechts/d3-soccer.git"
+    "url": "git+https://github.com/probberechts/d3-soccer.git"
   },
   "type": "module",
   "files": [
