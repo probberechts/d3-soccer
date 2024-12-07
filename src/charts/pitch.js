@@ -2,14 +2,12 @@ import { select as d3Select } from "d3-selection";
 import { arc as d3Arc } from "d3-shape";
 import { pitchLenght, pitchWidth } from "../config.js";
 
-
-export default function() {
-
-  var clip = {top: 0, right: pitchLenght, bottom: pitchWidth, left: 0};
+export default function () {
+  var clip = { top: 0, right: pitchLenght, bottom: pitchWidth, left: 0 };
   var height = 300;
   var rotated = false;
-  var width = (-clip.left + clip.right)/(-clip.top + clip.bottom)*height;
-  var pitchstrokewidth = .5;
+  var width = ((-clip.left + clip.right) / (-clip.top + clip.bottom)) * height;
+  var pitchstrokewidth = 0.5;
   var dirOfPlay = false;
   var shadeMiddleThird = false;
   var drawGoalsFn = drawGoalsAsLine;
@@ -20,7 +18,7 @@ export default function() {
       .attr("stroke-width", pitchstrokewidth)
       .attr("fill", "none")
       .attr("x", -2)
-      .attr("y", pitchWidth/2 - 3.66)
+      .attr("y", pitchWidth / 2 - 3.66)
       .attr("width", 2)
       .attr("height", 7.32);
     lines
@@ -28,7 +26,7 @@ export default function() {
       .attr("stroke-width", pitchstrokewidth)
       .attr("fill", "none")
       .attr("x", pitchLenght)
-      .attr("y", pitchWidth/2 - 3.66)
+      .attr("y", pitchWidth / 2 - 3.66)
       .attr("width", 2)
       .attr("height", 7.32);
   }
@@ -37,53 +35,57 @@ export default function() {
     lines
       .append("rect")
       .attr("stroke-width", 0)
-      .attr("x", -pitchstrokewidth*1.5)
-      .attr("y", pitchWidth/2 - 3.66)
-      .attr("width", pitchstrokewidth*3)
+      .attr("x", -pitchstrokewidth * 1.5)
+      .attr("y", pitchWidth / 2 - 3.66)
+      .attr("width", pitchstrokewidth * 3)
       .attr("height", 7.32);
     lines
       .append("rect")
       .attr("stroke-width", 0)
-      .attr("x", pitchLenght-pitchstrokewidth*1.5)
-      .attr("y", pitchWidth/2 - 3.66)
-      .attr("width", pitchstrokewidth*3)
+      .attr("x", pitchLenght - pitchstrokewidth * 1.5)
+      .attr("y", pitchWidth / 2 - 3.66)
+      .attr("width", pitchstrokewidth * 3)
       .attr("height", 7.32);
   }
 
   function chart(selection) {
-    selection.each(function() {
-      var pitch = d3Select(this).append("svg")
+    selection.each(function () {
+      var pitch = d3Select(this)
+        .append("svg")
         .attr("width", width)
         .attr("height", height)
         .attr("viewBox", () => {
-          let width = (clip.right - clip.left)
-          let height = (clip.bottom - clip.top)
+          let width = clip.right - clip.left;
+          let height = clip.bottom - clip.top;
           let xdim, ydim, xpad, ypad;
           if (rotated) {
             xpad = height === pitchWidth ? 4 : 2;
             ypad = width === pitchLenght ? 4 : 2;
-            xdim = (-clip.left + clip.right + ypad)
-            ydim = (-clip.top + clip.bottom + xpad)
+            xdim = -clip.left + clip.right + ypad;
+            ydim = -clip.top + clip.bottom + xpad;
           } else {
             xpad = height === pitchWidth ? 4 : 2;
             ypad = width === pitchLenght ? 4 : 2;
-            ydim = (-clip.top + clip.bottom + xpad)
-            xdim = (-clip.left + clip.right + ypad)
+            ydim = -clip.top + clip.bottom + xpad;
+            xdim = -clip.left + clip.right + ypad;
           }
-          return `-2 -2 ${xdim} ${ydim}`
+          return `-2 -2 ${xdim} ${ydim}`;
         })
         .append("g")
         .attr("class", "pitch")
-        .attr("transform", `translate(${- clip.left}, ${- clip.top})rotate(${rotated ? -90 : 0} 0 0)translate(${rotated ? -105 : 0} 0)`);
+        .attr(
+          "transform",
+          `translate(${-clip.left}, ${-clip.top})rotate(${rotated ? -90 : 0} 0 0)translate(${rotated ? -105 : 0} 0)`,
+        );
 
-      pitch.append("g")
-        .attr("class", "below")
+      pitch.append("g").attr("class", "below");
 
-      var lines = pitch.append("g")
+      var lines = pitch
+        .append("g")
         .attr("class", "lines")
         .attr("stroke", "#000")
         .attr("fill", "#000")
-        .attr("pointer-events", "none")
+        .attr("pointer-events", "none");
 
       // Halfway line
       lines
@@ -94,11 +96,11 @@ export default function() {
         .attr("x2", pitchLenght / 2)
         .attr("y2", pitchWidth);
 
-      // Centre circle 
+      // Centre circle
       lines
         .append("circle")
         .attr("stroke-width", pitchstrokewidth)
-        .attr("fill", 'none')
+        .attr("fill", "none")
         .attr("cx", pitchLenght / 2)
         .attr("cy", pitchWidth / 2)
         .attr("r", 9.15);
@@ -113,37 +115,42 @@ export default function() {
       var arc1 = d3Arc()
         .innerRadius(9.15)
         .outerRadius(9.15)
-        .startAngle(38 * (Math.PI/180)) //converting from degs to radians
-        .endAngle(142 * (Math.PI/180)); //just radians
-      lines.append("path")
+        .startAngle(38 * (Math.PI / 180)) //converting from degs to radians
+        .endAngle(142 * (Math.PI / 180)); //just radians
+      lines
+        .append("path")
         .attr("stroke-width", pitchstrokewidth)
         .attr("d", arc1)
-        .attr("transform", "translate(11,"+pitchWidth/2+")");
+        .attr("transform", "translate(11," + pitchWidth / 2 + ")");
       var arc2 = d3Arc()
         .innerRadius(9.15)
         .outerRadius(9.15)
-        .startAngle(218 * (Math.PI/180)) //converting from degs to radians
-        .endAngle(322 * (Math.PI/180)); //just radians
-      lines.append("path")
+        .startAngle(218 * (Math.PI / 180)) //converting from degs to radians
+        .endAngle(322 * (Math.PI / 180)); //just radians
+      lines
+        .append("path")
         .attr("stroke-width", pitchstrokewidth)
         .attr("d", arc2)
-        .attr("transform", "translate(" + (pitchLenght - 11) +","+pitchWidth/2+")");
+        .attr(
+          "transform",
+          "translate(" + (pitchLenght - 11) + "," + pitchWidth / 2 + ")",
+        );
 
       // Goal areas
       lines
         .append("rect")
         .attr("stroke-width", pitchstrokewidth)
-        .attr("fill", 'none')
+        .attr("fill", "none")
         .attr("x", 0)
-        .attr("y", pitchWidth/2 - 9.16)
+        .attr("y", pitchWidth / 2 - 9.16)
         .attr("width", 5.5)
         .attr("height", 18.32);
       lines
         .append("rect")
         .attr("stroke-width", pitchstrokewidth)
-        .attr("fill", 'none')
-        .attr("x", pitchLenght-5.5)
-        .attr("y", pitchWidth/2 - 9.16)
+        .attr("fill", "none")
+        .attr("x", pitchLenght - 5.5)
+        .attr("y", pitchWidth / 2 - 9.16)
         .attr("width", 5.5)
         .attr("height", 18.32);
 
@@ -153,15 +160,15 @@ export default function() {
         .attr("stroke-width", pitchstrokewidth)
         .attr("fill", "none")
         .attr("x", 0)
-        .attr("y", pitchWidth/2 - 20.16)
+        .attr("y", pitchWidth / 2 - 20.16)
         .attr("width", 16.5)
         .attr("height", 40.32);
       lines
         .append("rect")
         .attr("stroke-width", pitchstrokewidth)
         .attr("fill", "none")
-        .attr("x", pitchLenght-16.5)
-        .attr("y", pitchWidth/2 - 20.16)
+        .attr("x", pitchLenght - 16.5)
+        .attr("y", pitchWidth / 2 - 20.16)
         .attr("width", 16.5)
         .attr("height", 40.32);
 
@@ -170,31 +177,35 @@ export default function() {
         .append("circle")
         .attr("stroke-width", 0)
         .attr("cx", 11)
-        .attr("cy", pitchWidth/2)
+        .attr("cy", pitchWidth / 2)
         .attr("r", pitchstrokewidth);
       lines
         .append("circle")
         .attr("stroke-width", 0)
-        .attr("cx", pitchLenght-11)
-        .attr("cy", pitchWidth/2)
+        .attr("cx", pitchLenght - 11)
+        .attr("cy", pitchWidth / 2)
         .attr("r", pitchstrokewidth);
 
       // Direction of play
       if (dirOfPlay) {
-        lines.append("polygon")
+        lines
+          .append("polygon")
           .attr("opacity", 0.1)
           .attr("stroke-width", 0)
           .attr("class", "shaded")
-          .attr("points", `
-                  25,${pitchWidth/2 - 2} 
-                  35,${pitchWidth/2 - 2} 
-                  35,${pitchWidth/2 - 5} 
-                  40,${pitchWidth/2} 
-                  35,${pitchWidth/2 + 5} 
-                  35,${pitchWidth/2 + 2} 
-                  25,${pitchWidth/2 + 2} 
-                  25,${pitchWidth/2 - 2}
-                `);
+          .attr(
+            "points",
+            `
+                  25,${pitchWidth / 2 - 2} 
+                  35,${pitchWidth / 2 - 2} 
+                  35,${pitchWidth / 2 - 5} 
+                  40,${pitchWidth / 2} 
+                  35,${pitchWidth / 2 + 5} 
+                  35,${pitchWidth / 2 + 2} 
+                  25,${pitchWidth / 2 + 2} 
+                  25,${pitchWidth / 2 - 2}
+                `,
+          );
       }
 
       // Pitch boundaries
@@ -210,8 +221,7 @@ export default function() {
       // Goals
       drawGoalsFn(lines);
 
-      pitch.append("g")
-        .attr("class", "above")
+      pitch.append("g").attr("class", "above");
 
       // Middle third
       if (shadeMiddleThird) {
@@ -230,7 +240,7 @@ export default function() {
   chart.height = function (_) {
     if (!arguments.length) return height;
     height = +_;
-    width = (-clip.left + clip.right)/(-clip.top + clip.bottom)*height;
+    width = ((-clip.left + clip.right) / (-clip.top + clip.bottom)) * height;
     return chart;
   };
 
@@ -264,19 +274,20 @@ export default function() {
 
   chart.goals = function (_) {
     if (!arguments.length) return drawGoalsFn;
-    if (_ === "box")
-      drawGoalsFn = drawGoalsAsBox;
-    else if (_ === "line")
-      drawGoalsFn = drawGoalsAsLine;
-    else
-      drawGoalsFn = _;
+    if (_ === "box") drawGoalsFn = drawGoalsAsBox;
+    else if (_ === "line") drawGoalsFn = drawGoalsAsLine;
+    else drawGoalsFn = _;
     return chart;
   };
 
   chart.clip = function (_) {
-    if (!arguments.length) return [[clip.left, clip.top], [clip.right, clip.bottom]];
-    clip = {top: _[0][1], bottom: _[1][1], left: _[0][0], right: _[1][0]};
-    width = (-clip.left + clip.right)/(-clip.top + clip.bottom)*height;
+    if (!arguments.length)
+      return [
+        [clip.left, clip.top],
+        [clip.right, clip.bottom],
+      ];
+    clip = { top: _[0][1], bottom: _[1][1], left: _[0][0], right: _[1][0] };
+    width = ((-clip.left + clip.right) / (-clip.top + clip.bottom)) * height;
     return chart;
   };
 

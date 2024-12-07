@@ -1,27 +1,25 @@
 import { select as d3Select, pointer as d3Pointer } from "d3-selection";
-import { spadlActionTypes, spadlBodyparts, spadlResults } from '../config.js';
+import { spadlActionTypes, spadlBodyparts, spadlResults } from "../config.js";
 // import css from '../styles/styles.css';
 
-export default function() {
-
+export default function () {
   var tooltip = d3Select("#tooltip");
 
   function chart(g) {
-      if (!tooltip.size()) {
-        tooltip = g
-          .append("div")
-          .style("position", "absolute")
-          .style("pointer-events", "none")
-          .style("z-index", 6)
-          .style("opacity", 0)
-          .attr("class", "tooltip")
-          .attr("id", "tooltip");
-      }
+    if (!tooltip.size()) {
+      tooltip = g
+        .append("div")
+        .style("position", "absolute")
+        .style("pointer-events", "none")
+        .style("z-index", 6)
+        .style("opacity", 0)
+        .attr("class", "tooltip")
+        .attr("id", "tooltip");
+    }
   }
 
   chart.show = function (e, d) {
-      tooltip
-      .html(`
+    tooltip.html(`
         <table>
           <tr>
             <th colspan="2">${spadlActionTypes[d.type_id].label}</th>
@@ -54,18 +52,17 @@ export default function() {
             <td>x=${d.end_x.toFixed(2)} , y=${d.end_y.toFixed(2)}</td>
           </tr>
         </table>
-      `)
-      let [x, y] = d3Pointer(e, document.body);
-      tooltip
-        .style("opacity", .95)
-        .style("left", x + "px")
-        .style("top", y + "px");
+      `);
+    let [x, y] = d3Pointer(e, document.body);
+    tooltip
+      .style("opacity", 0.95)
+      .style("left", x + "px")
+      .style("top", y + "px");
     return chart;
   };
 
   chart.hide = function () {
-    tooltip
-      .style("opacity", 0)
+    tooltip.style("opacity", 0);
     return chart;
   };
 

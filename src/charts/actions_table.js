@@ -1,40 +1,39 @@
 import { select as d3Select } from "d3-selection";
-import { actiontypePlotFn } from './actions.js';
-import { spadlActionTypes, spadlBodyparts, spadlResults } from  '../config.js';
+import { actiontypePlotFn } from "./actions.js";
+import { spadlActionTypes, spadlBodyparts, spadlResults } from "../config.js";
 // import css from '../styles/styles.css';
 
-export default function() {
-
+export default function () {
   var scale = 9,
     tableColumns = {
-      "symbol": "",
-      "team_name": "Team",
-      "player_name": "Player",
-      "type_id": "Type",
-      "result_id": "Result"
+      symbol: "",
+      team_name: "Team",
+      player_name: "Player",
+      type_id: "Type",
+      result_id: "Result",
     },
     teamColors = {};
 
-
   function tabulate(g, columns) {
-    g.html("")
+    g.html("");
     var table = g.append("table"),
       thead = table.append("thead"),
-      tbody = table.append("tbody")
+      tbody = table.append("tbody");
 
     table.attr("class", "actions-table");
 
     // append the header row
-    thead.append("tr")
+    thead
+      .append("tr")
       .selectAll("th")
       .data(Object.values(columns))
       .enter()
       .append("th")
-      .text(function(column) { return column; });
-    return tbody
+      .text(function (column) {
+        return column;
+      });
+    return tbody;
   }
-
-
 
   // For each small multiple…
   function chart(g) {
@@ -44,65 +43,72 @@ export default function() {
       for (const action of data) {
         if (action.team_id in teamColors === false) {
           if (Object.keys(teamColors).length >= 2)
-            throw "You specified ids of teams that do not occur in the data!"
+            throw "You specified ids of teams that do not occur in the data!";
           else
-            teamColors[action.team_id] = defaultColors[Object.keys(teamColors).length]
+            teamColors[action.team_id] =
+              defaultColors[Object.keys(teamColors).length];
         }
       }
 
       // create the table
-      var elTable = d3Select(this)
-        // .attr('class', css.actions_table);
+      var elTable = d3Select(this);
+      // .attr('class', css.actions_table);
       var tbody = tabulate(elTable, tableColumns);
 
       // Update the table
-      var uTable = tbody.selectAll("tr")
-        .data(data)
+      var uTable = tbody.selectAll("tr").data(data);
 
-      var rows = uTable.enter()
+      var rows = uTable
+        .enter()
         .append("tr")
-        .attr('id', d => d.action_id);
+        .attr("id", (d) => d.action_id);
 
       uTable.exit().remove();
 
       // create a cell in each row for each column
-      rows.selectAll("td")
-        .data(function(row, i) {
-          return Object.keys(tableColumns).map(function(column) {
-            return {column: column, value: row[column], i: i, data: row};
+      rows
+        .selectAll("td")
+        .data(function (row, i) {
+          return Object.keys(tableColumns).map(function (column) {
+            return { column: column, value: row[column], i: i, data: row };
           });
         })
         .enter()
         .append("td")
-        .each(function(d) {
+        .each(function (d) {
           if (d.column === "symbol") {
             d3Select(this)
               .attr("class", d.column)
               .style("text-align", "center")
-              .append('svg')
+              .append("svg")
               .attr("height", 20)
               .attr("width", 20)
-              .call(actiontypePlotFn[d.data.type_id]["symbol"], d.data, (d.i+1), teamColors[d.data.team_id], scale)
-              .select('g')
-              .attr('transform', 'translate(10,10)')
+              .call(
+                actiontypePlotFn[d.data.type_id]["symbol"],
+                d.data,
+                d.i + 1,
+                teamColors[d.data.team_id],
+                scale,
+              )
+              .select("g")
+              .attr("transform", "translate(10,10)");
           } else {
             d3Select(this)
               .attr("class", d.column)
-              .html(function(d) {
+              .html(function (d) {
                 if (d.column === "type_id") {
-                  return spadlActionTypes[+d.value]['label']
+                  return spadlActionTypes[+d.value]["label"];
                 } else if (d.column === "result_id") {
-                  return spadlResults[+d.value]['label']
+                  return spadlResults[+d.value]["label"];
                 } else if (d.column === "bodypart_id") {
-                  return spadlBodyparts[+d.value]['label']
+                  return spadlBodyparts[+d.value]["label"];
                 } else {
-                  return d.value
+                  return d.value;
                 }
               });
           }
-        })
+        });
     });
-
   }
 
   chart.tableColumns = function (d) {
