@@ -1,4 +1,4 @@
-import * as meta from "./package.json" assert { type: "json" };
+import * as meta from "./package.json" with { type: "json" };
 
 // ------ JavaScript
 import { babel } from "@rollup/plugin-babel";
