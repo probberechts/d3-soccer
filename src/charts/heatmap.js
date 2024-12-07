@@ -152,7 +152,7 @@ export default function(pitch) {
         color.domain(d3Extent(data, d => d.value));
       }
 
-      var draw = g.call(pitch).select(".below");
+      var draw = d3Select(this).call(pitch).select(".below");
 
       var join = draw
         .selectAll("rect.cell") // these
