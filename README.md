@@ -123,6 +123,19 @@ If _f_ is specified, hovering over a cell will trigger execution of _f(x, y, v)_
 
 If _f_ is specified, stopping hovering over a cell will trigger execution of _f()_. 
 
+
+<a name="heatmap_showValues" href="#heatmap_showValues">#</a> <i>heatmap</i>.<b>showValues</b>([<i>show</i>])
+
+If _show_ is set to true, the value of each cell will we displayed. If not set, returns the default configuration, which defaults to false.
+
+<a name="heatmap_valueFormatter" href="#heatmap_valueFormatter">#</a> <i>heatmap</i>.<b>heatmap_valueFormatter</b>([<i>f</i>])
+
+If _f_ is specified, the cell values will be formatted as a string using _f(v)_, where _v_ is the cell value.
+
+<a name="heatmap_valueFontSize" href="#heatmap_valueFontSize">#</a> <i>heatmap</i>.<b>heatmap_valueFontSize</b>([<i>f</i>])
+
+If _f_ is specified, the font size of a cell value will be set using _f(h, w, v)_, where _h_ and _w_ are the height and width of the cell and _v_ the cell value. Defaults to 20% of the cell height.
+
 <hr>
 
 

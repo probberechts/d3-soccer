@@ -141,6 +141,9 @@ export default function (pitch) {
     selStroke = "#FF6600",
     strokewidth = 0.0,
     interpolated = false,
+    showValues = false,
+    valueFormatter = (v) => v,
+    valueFontSize = (h) => h * 0.2 + "px",
     parent_el = "body",
     selStrokewidth = 0.5;
 
@@ -161,9 +164,12 @@ export default function (pitch) {
 
       var enterSel = join
         .enter()
-        .append("rect")
-        .attr("id", (d) => `cell(${d.i},${d.j})`)
+        .append("g")
         .attr("class", "cell")
+        .attr("id", (d) => `cell(${d.i},${d.j})`);
+
+      enterSel
+        .append("rect")
         .attr("x", (d) => d.x)
         .attr("y", (d) => d.y)
         .attr("width", (d) => d.width)
@@ -179,14 +185,14 @@ export default function (pitch) {
           return interpolated ? "transparent" : color(+d.value);
         })
         .style("cursor", enableInteraction ? "crosshair" : "default")
-        .on("mouseover", function (e, d) {
+        .on("mouseover", function (_, d) {
           if (enableInteraction)
             d3Select(this)
               .style("stroke", selStroke)
               .style("stroke-width", selStrokewidth);
           onSelect(d.x, d.y, d.value);
         })
-        .on("mouseout", function (e, d) {
+        .on("mouseout", function (_, d) {
           if (enableInteraction)
             d3Select(this)
               .style("stroke", stroke)
@@ -196,6 +202,7 @@ export default function (pitch) {
 
       join
         .merge(enterSel)
+        .select("rect")
         //.transition()
         .attr("x", (d) => d.x)
         .attr("y", (d) => d.y)
@@ -208,10 +215,39 @@ export default function (pitch) {
 
       join
         .exit()
+        .select("rect")
         //.transition()
         .attr("width", 0)
         .attr("height", 0)
         .remove();
+
+      if (showValues) {
+        enterSel
+          .append("text")
+          .attr("x", (d) => d.x + d.width / 2)
+          .attr("y", (d) => d.y + d.height / 2)
+          .attr("dy", ".35em")
+          .attr("text-anchor", "middle")
+          .text((d) => valueFormatter(d.value))
+          .style("fill", "white")
+          .style("mix-blend-mode", "difference")
+          .style("font-size", (d) => valueFontSize(d.height, d.width, d.value))
+          .style("pointer-events", "none");
+
+        join
+          .merge(enterSel)
+          .select("text")
+          .attr("x", (d) => d.x + d.width / 2)
+          .attr("y", (d) => d.y + d.height / 2)
+          .text((d) => valueFormatter(d.value));
+
+        join
+          .exit()
+          .select("text")
+          //.transition()
+          .style("font-size", 0)
+          .remove();
+      }
 
       if (interpolated) {
         var gx = d3Max(data, (d) => d.i) + 1;
@@ -290,6 +326,24 @@ export default function (pitch) {
   chart.enableInteraction = function (_) {
     if (!arguments.length) return enableInteraction;
     enableInteraction = Boolean(_);
+    return chart;
+  };
+
+  chart.showValues = function (_) {
+    if (!arguments.length) return showValues;
+    showValues = Boolean(_);
+    return chart;
+  };
+
+  chart.valueFormatter = function (_) {
+    if (!arguments.length) return valueFormatter;
+    valueFormatter = _;
+    return chart;
+  };
+
+  chart.valueFontSize = function (_) {
+    if (!arguments.length) return valueFontSize;
+    valueFontSize = _;
     return chart;
   };
 
